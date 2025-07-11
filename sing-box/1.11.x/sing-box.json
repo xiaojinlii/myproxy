@@ -338,7 +338,91 @@
       "default": "proxy"
     },
     {
-      "tag": "github",
+      "tag": "apple",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto",
+        "all",
+        "all-auto"
+      ],
+      "default": "direct"
+    },
+    {
+      "tag": "telegram",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto",
+        "all",
+        "all-auto"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "bilibili",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto",
+        "all",
+        "all-auto"
+      ],
+      "default": "direct"
+    },
+    {
+      "tag": "netflix",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto",
+        "all",
+        "all-auto"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "bahamut",
       "type": "selector",
       "outbounds": [
         "proxy",
@@ -380,7 +464,7 @@
       "default": "proxy"
     },
     {
-      "tag": "telegram",
+      "tag": "openai",
       "type": "selector",
       "outbounds": [
         "proxy",
