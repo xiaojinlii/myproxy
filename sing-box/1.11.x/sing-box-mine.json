@@ -133,7 +133,7 @@
         "mode": "and",
         "rules": [
           {
-            "rule_set": "🐬 代理_domain"
+            "rule_set": "proxy_domain"
           },
           {
             "invert": true,
@@ -264,7 +264,7 @@
         "download_detour": "➡️ 直连"
       },
       {
-        "tag": "🐬 代理_domain",
+        "tag": "proxy_domain",
         "type": "remote",
         "format": "binary",
         "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs",
@@ -575,7 +575,7 @@
       "stack": "mixed",
       "auto_route": true,
       "platform": {
-        "http_🐬 代理": {
+        "http_proxy": {
           "enabled": true,
           "server": "127.0.0.1",
           "server_port": 7890
