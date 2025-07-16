@@ -129,10 +129,12 @@
             "invert": true,
             "rule_set": [
               "cn_domain",
-              "apple_domain",
               "google_domain",
               "telegram_domain",
-              "netflix_domain"
+              "netflix_domain",
+              "apple_domain",
+              "microsoft_domain",
+              "notion_domain"
             ]
           }
         ],
@@ -161,10 +163,12 @@
       {
         "rule_set": [
           "apple_ip",
-          "apple_domain"
+          "apple_domain",
+          "microsoft_domain",
+          "notion_domain"
         ],
         "action": "route",
-        "outbound": "apple"
+        "outbound": "!cn-direct"
       },
       {
         "rule_set": [
@@ -176,20 +180,6 @@
       }
     ],
     "rule_set": [
-      {
-        "tag": "apple_ip",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/apple.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "apple_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/apple.srs",
-        "download_detour": "direct"
-      },
       {
         "tag": "cn_ip",
         "type": "remote",
@@ -266,6 +256,34 @@
         "format": "binary",
         "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/youtube.srs",
         "download_detour": "direct"
+      },
+      {
+        "tag": "apple_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/apple.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "apple_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/apple.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "microsoft_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/microsoft.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "notion_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/notion.srs",
+        "download_detour": "direct"
       }
     ],
     "final": "final",
@@ -328,7 +346,7 @@
       "default": "proxy"
     },
     {
-      "tag": "apple",
+      "tag": "!cn-direct",
       "type": "selector",
       "outbounds": [
         "proxy",
