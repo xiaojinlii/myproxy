@@ -297,6 +297,16 @@
   },
   "outbounds": [
     {
+      "tag": "all",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "asia",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
       "tag": "proxy",
       "type": "selector",
       "outbounds": [
@@ -316,7 +326,7 @@
         "us-auto",
         "direct"
       ],
-      "default": "all-auto"
+      "default": "asia-auto"
     },
     {
       "tag": "google",
@@ -547,16 +557,6 @@
         "us-auto"
       ],
       "default": "proxy"
-    },
-    {
-      "tag": "all",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "asia",
-      "type": "selector",
-      "outbounds": []
     },
     {
       "tag": "hk",
