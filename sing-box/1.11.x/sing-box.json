@@ -573,22 +573,10 @@
       "tag": "GLOBAL",
       "type": "selector",
       "outbounds": [
-        "direct",
-        "proxy",
         "all",
-        "all-auto",
         "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
+        "proxy",
+        "direct"
       ],
       "default": "direct"
     },
