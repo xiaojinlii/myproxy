@@ -300,6 +300,10 @@
       "tag": "proxy",
       "type": "selector",
       "outbounds": [
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -310,8 +314,6 @@
         "sg-auto",
         "us",
         "us-auto",
-        "all",
-        "all-auto",
         "direct"
       ],
       "default": "all-auto"
@@ -322,6 +324,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -331,9 +337,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "proxy"
     },
@@ -343,6 +347,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -352,9 +360,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "direct"
     },
@@ -364,6 +370,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -373,9 +383,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "proxy"
     },
@@ -385,6 +393,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -394,9 +406,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "direct"
     },
@@ -406,6 +416,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -415,9 +429,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "proxy"
     },
@@ -427,6 +439,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -436,9 +452,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "proxy"
     },
@@ -448,6 +462,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -457,9 +475,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "proxy"
     },
@@ -469,6 +485,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -478,9 +498,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "proxy"
     },
@@ -490,6 +508,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -499,9 +521,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "direct"
     },
@@ -511,6 +531,10 @@
       "outbounds": [
         "proxy",
         "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -520,11 +544,19 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "proxy"
+    },
+    {
+      "tag": "all",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "asia",
+      "type": "selector",
+      "outbounds": []
     },
     {
       "tag": "hk",
@@ -552,9 +584,20 @@
       "outbounds": []
     },
     {
-      "tag": "all",
-      "type": "selector",
-      "outbounds": []
+      "tag": "all-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "asia-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
     },
     {
       "tag": "hk-auto",
@@ -597,19 +640,15 @@
       "tolerance": 50
     },
     {
-      "tag": "all-auto",
-      "type": "urltest",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "1m",
-      "tolerance": 50
-    },
-    {
       "tag": "GLOBAL",
       "type": "selector",
       "outbounds": [
         "direct",
         "proxy",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
         "hk",
         "hk-auto",
         "tw",
@@ -619,9 +658,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "all",
-        "all-auto"
+        "us-auto"
       ],
       "default": "direct"
     },
