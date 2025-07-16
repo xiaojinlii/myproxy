@@ -101,6 +101,11 @@
         "outbound": "direct"
       },
       {
+        "rule_set": "tiktok_domain",
+        "action": "route",
+        "outbound": "tiktok"
+      },
+      {
         "rule_set": [
           "netflix_ip",
           "netflix_domain"
@@ -109,14 +114,19 @@
         "outbound": "netflix"
       },
       {
+        "rule_set": "github_domain",
+        "action": "route",
+        "outbound": "github"
+      },
+      {
         "rule_set": "youtube_domain",
         "action": "route",
         "outbound": "youtube"
       },
       {
-        "rule_set": "openai_domain",
+        "rule_set": "ai_domain",
         "action": "route",
-        "outbound": "openai"
+        "outbound": "ai"
       },
       {
         "type": "logical",
@@ -131,7 +141,6 @@
               "cn_domain",
               "google_domain",
               "telegram_domain",
-              "netflix_domain",
               "apple_domain",
               "microsoft_domain",
               "notion_domain"
@@ -146,19 +155,19 @@
       },
       {
         "rule_set": [
-          "telegram_ip",
-          "telegram_domain"
-        ],
-        "action": "route",
-        "outbound": "telegram"
-      },
-      {
-        "rule_set": [
           "google_ip",
           "google_domain"
         ],
         "action": "route",
         "outbound": "google"
+      },
+      {
+        "rule_set": [
+          "telegram_ip",
+          "telegram_domain"
+        ],
+        "action": "route",
+        "outbound": "telegram"
       },
       {
         "rule_set": [
@@ -195,6 +204,13 @@
         "download_detour": "direct"
       },
       {
+        "tag": "proxy_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs",
+        "download_detour": "direct"
+      },
+      {
         "tag": "google_ip",
         "type": "remote",
         "format": "binary",
@@ -209,31 +225,17 @@
         "download_detour": "direct"
       },
       {
-        "tag": "netflix_ip",
+        "tag": "github_domain",
         "type": "remote",
         "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/netflix.srs",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/github.srs",
         "download_detour": "direct"
       },
       {
-        "tag": "netflix_domain",
+        "tag": "youtube_domain",
         "type": "remote",
         "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/netflix.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "openai_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/openai.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "proxy_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/youtube.srs",
         "download_detour": "direct"
       },
       {
@@ -251,10 +253,31 @@
         "download_detour": "direct"
       },
       {
-        "tag": "youtube_domain",
+        "tag": "ai_domain",
         "type": "remote",
         "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/youtube.srs",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/category-ai-!cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "tiktok_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/tiktok.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "netflix_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/netflix.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "netflix_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/netflix.srs",
         "download_detour": "direct"
       },
       {
@@ -346,53 +369,7 @@
       "default": "proxy"
     },
     {
-      "tag": "!cn-direct",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "direct",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "direct"
-    },
-    {
-      "tag": "telegram",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "direct",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
-    },
-    {
-      "tag": "netflix",
+      "tag": "github",
       "type": "selector",
       "outbounds": [
         "proxy",
@@ -438,7 +415,76 @@
       "default": "proxy"
     },
     {
-      "tag": "openai",
+      "tag": "telegram",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "ai",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "tiktok",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "netflix",
       "type": "selector",
       "outbounds": [
         "proxy",
@@ -462,6 +508,29 @@
     },
     {
       "tag": "cn",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct",
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto"
+      ],
+      "default": "direct"
+    },
+    {
+      "tag": "!cn-direct",
       "type": "selector",
       "outbounds": [
         "proxy",
