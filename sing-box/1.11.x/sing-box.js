@@ -1,4 +1,4 @@
-const { type, name } = $arguments
+const { type, name, platform = 'linux' } = $arguments
 const compatible_outbound = {
   tag: 'COMPATIBLE',
   type: 'direct',
@@ -45,6 +45,19 @@ config.outbounds.forEach(outbound => {
     outbound.outbounds.push(compatible_outbound.tag);
   }
 });
+
+// Add auto_redirect to tun inbounds if platform is linux
+if (platform === 'linux') {
+  config.inbounds = config.inbounds?.map(inbound => {
+    if (inbound.type === 'tun') {
+      return {
+        ...inbound,
+        auto_redirect: true
+      }
+    }
+    return inbound
+  }) || []
+}
 
 $content = JSON.stringify(config, null, 2)
 
