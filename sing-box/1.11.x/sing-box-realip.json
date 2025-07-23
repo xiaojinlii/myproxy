@@ -647,8 +647,8 @@
         "download_detour": "direct"
       }
     ],
-    "final": "final",
-    "auto_detect_interface": true
+    "auto_detect_interface": true,
+    "final": "final"
   },
   "dns": {
     "servers": [
@@ -700,7 +700,7 @@
         "server": "ali"
       }
     ],
-    "final": "google",
-    "independent_cache": true
+    "independent_cache": true,
+    "final": "google"
   }
 }
