@@ -59,6 +59,19 @@ if (platform === 'linux') {
   }) || []
 }
 
+// === 修改 local-dns 的 address，根据平台类型 ===
+const localDns = config.dns?.servers?.find(s => s.tag === 'local-dns');
+if (localDns) {
+  if (['ios', 'android'].includes(platform)) {
+    localDns.address = 'local';
+  } else if (platform === 'linux') {
+    localDns.address = 'dhcp://auto';
+  } else {
+    // 其他平台不做修改
+    // localDns.address = 'dhcp://auto';
+  }
+}
+
 $content = JSON.stringify(config, null, 2)
 
 function getTags(proxies, regex) {
