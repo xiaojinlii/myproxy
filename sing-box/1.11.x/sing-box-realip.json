@@ -653,23 +653,13 @@
   "dns": {
     "servers": [
       {
-        "tag": "google",
+        "tag": "remote-dns",
         "address": "https://8.8.8.8/dns-query",
         "detour": "proxy"
       },
       {
-        "tag": "ali",
+        "tag": "local-dns",
         "address": "https://223.5.5.5/dns-query",
-        "detour": "direct"
-      },
-      {
-        "tag": "dhcp",
-        "address": "dhcp://auto",
-        "detour": "direct"
-      },
-      {
-        "tag": "local",
-        "address": "local",
         "detour": "direct"
       }
     ],
@@ -677,18 +667,18 @@
       {
         "outbound": "any",
         "action": "route",
-        "server": "ali",
+        "server": "local-dns",
         "disable_cache": true
       },
       {
         "clash_mode": "Direct",
         "action": "route",
-        "server": "ali"
+        "server": "local-dns"
       },
       {
         "clash_mode": "Global",
         "action": "route",
-        "server": "ali"
+        "server": "local-dns"
       },
       {
         "query_type": "HTTPS",
@@ -697,10 +687,10 @@
       {
         "rule_set": "cn_domain",
         "action": "route",
-        "server": "ali"
+        "server": "local-dns"
       }
     ],
     "independent_cache": true,
-    "final": "google"
+    "final": "remote-dns"
   }
 }
