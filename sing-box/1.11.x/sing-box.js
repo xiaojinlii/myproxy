@@ -1,4 +1,4 @@
-const { type, name, platform = 'linux' } = $arguments
+const { type, name, platform = 'linux', fakeip = false } = $arguments
 const compatible_outbound = {
   tag: 'COMPATIBLE',
   type: 'direct',
@@ -69,6 +69,55 @@ if (localDns) {
   } else {
     // 其他平台不做修改
     // localDns.address = 'dhcp://auto';
+  }
+}
+
+// fakeip 配置
+if (fakeip) {
+  // 1. 添加 dns.fakeip
+  if (config.dns) {
+    config.dns.fakeip = {
+      enabled: true,
+      inet4_range: "198.18.0.0/15",
+      inet6_range: "fc00::/18"
+    };
+  }
+
+  // 2. 添加 dns.servers.fakeip
+  if (Array.isArray(config.dns?.servers)) {
+    const hasFakeIpServer = config.dns.servers.some(s => s.tag === 'fakeip-dns');
+    if (!hasFakeIpServer) {
+      config.dns.servers.push({
+        tag: 'fakeip-dns',
+        address: 'fakeip'
+      });
+    }
+  }
+
+  // 3. 添加dns.rules
+  if (Array.isArray(config.dns?.rules)) {
+    // Global server 改为 fakeip-dns
+    for (const rule of config.dns.rules) {
+      if (rule.clash_mode === 'Global') {
+        rule.server = 'fakeip-dns';
+        break;
+      }
+    }
+
+    // 在倒数第二个位置插入
+    const ruleToInsert = {
+      "query_type": ["A", "AAAA"],
+      "action": "route",
+      "server": "fakeip-dns",
+      "rewrite_ttl": 1
+    };
+    const insertIndex = Math.max(0, config.dns.rules.length - 1);
+    config.dns.rules.splice(insertIndex, 0, ruleToInsert);
+  }
+
+  // 4. 添加 experimental.cache_file.store_fakeip
+  if (config.experimental?.cache_file) {
+    config.experimental.cache_file.store_fakeip = true;
   }
 }
 
