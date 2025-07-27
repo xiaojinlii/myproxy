@@ -187,52 +187,6 @@
       "default": "proxy"
     },
     {
-      "tag": "tiktok",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "direct",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
-    },
-    {
-      "tag": "netflix",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "direct",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
-    },
-    {
       "tag": "cn",
       "type": "selector",
       "outbounds": [
@@ -439,19 +393,6 @@
         "outbound": "direct"
       },
       {
-        "rule_set": "tiktok_domain",
-        "action": "route",
-        "outbound": "tiktok"
-      },
-      {
-        "rule_set": [
-          "netflix_ip",
-          "netflix_domain"
-        ],
-        "action": "route",
-        "outbound": "netflix"
-      },
-      {
         "rule_set": "github_domain",
         "action": "route",
         "outbound": "github"
@@ -595,27 +536,6 @@
         "type": "remote",
         "format": "binary",
         "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/category-ai-!cn.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "tiktok_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/tiktok.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "netflix_ip",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/netflix.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "netflix_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/netflix.srs",
         "download_detour": "direct"
       },
       {
