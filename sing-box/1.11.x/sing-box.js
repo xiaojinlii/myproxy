@@ -64,7 +64,7 @@ const localDns = config.dns?.servers?.find(s => s.tag === 'local-dns');
 if (localDns) {
   if (['ios', 'android'].includes(platform)) {
     localDns.address = 'local';
-  } else if (platform === 'linux') {
+  } else if ('linux', 'mac', 'win'].includes(platform)) {
     localDns.address = 'dhcp://auto';
   } else {
     // 其他平台不做修改
