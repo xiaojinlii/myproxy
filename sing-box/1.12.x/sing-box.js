@@ -1,4 +1,13 @@
-const { type, name, platform = 'linux', fakeip = false } = $arguments
+const { 
+  type, 
+  name, 
+  platform = 'linux', 
+  fakeip = false,
+  ts_enable = false，
+  ts_url,   // Tailscale 控制地址
+  ts_ak     // Tailscale 认证密钥
+} = $arguments
+
 const compatible_outbound = {
   tag: 'COMPATIBLE',
   type: 'direct',
@@ -12,6 +21,42 @@ let proxies = await produceArtifact({
   platform: 'sing-box',
   produceType: 'internal',
 })
+
+if (ts_enable && ts_url && ts_ak) {
+  config.outbounds.push({
+    "tag": "home",
+    "type": "selector",
+    "outbounds": [
+      "direct",
+      "ts-ep"
+    ],
+    "default": "ts-ep"
+  })
+
+  const routeRule = {
+    "ip_cidr": [
+      "100.64.0.0/10",
+      "172.16.1.0/24"
+    ],
+    "outbound": "home"
+  };
+  if (Array.isArray(config.route?.rules)) {
+    config.route.rules.unshift(routeRule); // 插入到最前面
+  }
+
+  config.endpoints = [
+    {
+      "type": "tailscale",
+      "tag": "ts-ep",
+      "control_url": ts_url,
+      "auth_key": ts_ak,
+      "hostname": "singbox",
+      "udp_timeout": "5m",
+      "accept_routes": true
+    }
+  ]
+
+}
 
 config.outbounds.push(...proxies)
 
