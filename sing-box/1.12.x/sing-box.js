@@ -63,38 +63,34 @@ if (platform === 'linux') {
 const localDns = config.dns?.servers?.find(s => s.tag === 'local-dns');
 if (localDns) {
   if (['ios', 'android'].includes(platform)) {
-    localDns.address = 'local';
+    localDns.type = 'local';
+    delete localDns.server;
   } else if (['linux', 'mac', 'win'].includes(platform)) {
-    localDns.address = 'dhcp://auto';
+    localDns.type = 'dhcp';
+    delete localDns.server;
   } else {
     // 其他平台不做修改
-    // localDns.address = 'dhcp://auto';
+    // localDns.type = 'dhcp';
+    // delete localDns.server;
   }
 }
 
 // fakeip 配置
 if (fakeip) {
-  // 1. 添加 dns.fakeip
-  if (config.dns) {
-    config.dns.fakeip = {
-      enabled: true,
-      inet4_range: "198.18.0.0/15",
-      inet6_range: "fc00::/18"
-    };
-  }
-
-  // 2. 添加 dns.servers.fakeip
+  // 1. 添加 dns.servers.fakeip
   if (Array.isArray(config.dns?.servers)) {
     const hasFakeIpServer = config.dns.servers.some(s => s.tag === 'fakeip-dns');
     if (!hasFakeIpServer) {
       config.dns.servers.push({
         tag: 'fakeip-dns',
-        address: 'fakeip'
+        type: 'fakeip',
+        inet4_range: "198.18.0.0/15",
+        inet6_range: "fc00::/18"
       });
     }
   }
 
-  // 3. 添加dns.rules
+  // 2. 添加dns.rules
   if (Array.isArray(config.dns?.rules)) {
     // Global server 改为 fakeip-dns
     for (const rule of config.dns.rules) {

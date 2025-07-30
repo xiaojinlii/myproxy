@@ -353,6 +353,9 @@
     }
   ],
 "route": {
+    "default_domain_resolver": {
+      "server": "local-dns"
+    },
     "rules": [
       {
         "action": "sniff",
@@ -574,22 +577,18 @@
     "servers": [
       {
         "tag": "remote-dns",
-        "address": "https://8.8.8.8/dns-query",
+        "type": "https",
+        "server": "8.8.8.8",
         "detour": "proxy"
       },
       {
         "tag": "local-dns",
-        "address": "https://223.5.5.5/dns-query",
+        "type": "https",
+        "server": "223.5.5.5",
         "detour": "direct"
       }
     ],
     "rules": [
-      {
-        "outbound": "any",
-        "action": "route",
-        "server": "local-dns",
-        "disable_cache": true
-      },
       {
         "clash_mode": "Direct",
         "action": "route",
