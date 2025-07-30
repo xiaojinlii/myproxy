@@ -3,7 +3,7 @@ const {
   name, 
   platform = 'linux', 
   fakeip = false,
-  ts_enable = false，
+  ts_enable = false,
   ts_url,   // Tailscale 控制地址
   ts_ak     // Tailscale 认证密钥
 } = $arguments
