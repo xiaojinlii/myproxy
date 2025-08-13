@@ -22,6 +22,8 @@ let proxies = await produceArtifact({
   produceType: 'internal',
 })
 
+
+// ===== 1. enable tailscale ===== //
 if (ts_enable && ts_url && ts_ak) {
   config.outbounds.push({
     "tag": "home",
@@ -58,6 +60,7 @@ if (ts_enable && ts_url && ts_ak) {
 
 }
 
+// ===== 2. outbounds ===== //
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
@@ -91,7 +94,7 @@ config.outbounds.forEach(outbound => {
   }
 });
 
-// Add auto_redirect to tun inbounds if platform is linux
+// ===== 3. linux auto_redirect ===== //
 if (platform === 'linux') {
   config.inbounds = config.inbounds?.map(inbound => {
     if (inbound.type === 'tun') {
@@ -104,7 +107,7 @@ if (platform === 'linux') {
   }) || []
 }
 
-// === 修改 local-dns 的 address，根据平台类型 ===
+// ===== 4. change local-dns ===== //
 const localDns = config.dns?.servers?.find(s => s.tag === 'local-dns');
 if (localDns) {
   if (['ios', 'android'].includes(platform)) {
@@ -120,7 +123,7 @@ if (localDns) {
   }
 }
 
-// fakeip 配置
+// ===== 5. enable fakeip ===== //
 if (fakeip) {
   // 1. 添加 dns.servers.fakeip
   if (Array.isArray(config.dns?.servers)) {
