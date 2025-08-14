@@ -181,14 +181,6 @@
       "default": "proxy"
     },
     {
-      "tag": "cn",
-      "type": "selector",
-      "outbounds": [
-        "direct"
-      ],
-      "default": "direct"
-    },
-    {
       "tag": "!cn-direct",
       "type": "selector",
       "outbounds": [
@@ -432,7 +424,7 @@
           "cn_domain"
         ],
         "action": "route",
-        "outbound": "cn"
+        "outbound": "direct"
       }
     ],
     "rule_set": [
