@@ -66,8 +66,7 @@
         "sg",
         "sg-auto",
         "us",
-        "us-auto",
-        "direct"
+        "us-auto"
       ],
       "default": "asia-auto"
     },
@@ -76,7 +75,6 @@
       "type": "selector",
       "outbounds": [
         "proxy",
-        "direct",
         "all",
         "all-auto",
         "asia",
@@ -99,7 +97,6 @@
       "type": "selector",
       "outbounds": [
         "proxy",
-        "direct",
         "all",
         "all-auto",
         "asia",
@@ -122,7 +119,6 @@
       "type": "selector",
       "outbounds": [
         "proxy",
-        "direct",
         "all",
         "all-auto",
         "asia",
@@ -145,7 +141,6 @@
       "type": "selector",
       "outbounds": [
         "proxy",
-        "direct",
         "all",
         "all-auto",
         "asia",
@@ -168,7 +163,6 @@
       "type": "selector",
       "outbounds": [
         "proxy",
-        "direct",
         "all",
         "all-auto",
         "asia",
@@ -190,22 +184,7 @@
       "tag": "cn",
       "type": "selector",
       "outbounds": [
-        "proxy",
-        "direct",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
+        "direct"
       ],
       "default": "direct"
     },
@@ -237,21 +216,7 @@
       "type": "selector",
       "outbounds": [
         "proxy",
-        "direct",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
+        "direct"
       ],
       "default": "proxy"
     },
@@ -597,7 +562,7 @@
       {
         "clash_mode": "Global",
         "action": "route",
-        "server": "local-dns"
+        "server": "remote-dns"
       },
       {
         "query_type": "HTTPS",
