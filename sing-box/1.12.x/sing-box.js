@@ -107,22 +107,6 @@ if (platform === 'linux') {
   }) || []
 }
 
-// ===== 4. change local-dns ===== //
-const localDns = config.dns?.servers?.find(s => s.tag === 'local-dns');
-if (localDns) {
-  if (['ios', 'android'].includes(platform)) {
-    localDns.type = 'local';
-    delete localDns.server;
-  } else if (['linux', 'mac', 'win'].includes(platform)) {
-    localDns.type = 'dhcp';
-    delete localDns.server;
-  } else {
-    // 其他平台不做修改
-    // localDns.type = 'dhcp';
-    // delete localDns.server;
-  }
-}
-
 // ===== 5. enable fakeip ===== //
 if (fakeip) {
   // 1. 添加 dns.servers.fakeip

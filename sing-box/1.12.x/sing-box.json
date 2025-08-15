@@ -40,16 +40,6 @@
   ],
   "outbounds": [
     {
-      "tag": "all",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "asia",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
       "tag": "proxy",
       "type": "selector",
       "outbounds": [
@@ -71,146 +61,14 @@
       "default": "asia-auto"
     },
     {
-      "tag": "google",
+      "tag": "all",
       "type": "selector",
-      "outbounds": [
-        "proxy",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
+      "outbounds": []
     },
     {
-      "tag": "github",
+      "tag": "asia",
       "type": "selector",
-      "outbounds": [
-        "proxy",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
-    },
-    {
-      "tag": "youtube",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
-    },
-    {
-      "tag": "telegram",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
-    },
-    {
-      "tag": "ai",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "proxy"
-    },
-    {
-      "tag": "!cn-direct",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "direct",
-        "all",
-        "all-auto",
-        "asia",
-        "asia-auto",
-        "hk",
-        "hk-auto",
-        "tw",
-        "tw-auto",
-        "jp",
-        "jp-auto",
-        "sg",
-        "sg-auto",
-        "us",
-        "us-auto"
-      ],
-      "default": "direct"
-    },
-    {
-      "tag": "final",
-      "type": "selector",
-      "outbounds": [
-        "proxy",
-        "direct"
-      ],
-      "default": "proxy"
+      "outbounds": []
     },
     {
       "tag": "hk",
@@ -297,16 +155,23 @@
       "tag": "GLOBAL",
       "type": "selector",
       "outbounds": [
-        "all",
-        "asia",
         "proxy",
         "direct"
       ],
-      "default": "direct"
+      "default": "proxy"
     },
     {
       "tag": "direct",
       "type": "direct"
+    },
+    {
+      "tag": "final",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct"
+      ],
+      "default": "proxy"
     }
   ],
 "route": {
@@ -353,70 +218,14 @@
         "outbound": "direct"
       },
       {
-        "rule_set": "github_domain",
+        "rule_set": "cn_ip",
         "action": "route",
-        "outbound": "github"
+        "outbound": "direct"
       },
       {
-        "rule_set": "youtube_domain",
+        "rule_set": "cn_domain",
         "action": "route",
-        "outbound": "youtube"
-      },
-      {
-        "rule_set": "ai_domain",
-        "action": "route",
-        "outbound": "ai"
-      },
-      {
-        "type": "logical",
-        "mode": "and",
-        "rules": [
-          {
-            "rule_set": "proxy_domain"
-          },
-          {
-            "invert": true,
-            "rule_set": [
-              "cn_domain",
-              "google_domain",
-              "telegram_domain",
-              "apple_domain",
-              "microsoft_domain",
-              "notion_domain"
-            ]
-          }
-        ],
-        "action": "route",
-        "outbound": "proxy"
-      },
-      {
-        "action": "resolve"
-      },
-      {
-        "rule_set": [
-          "google_ip",
-          "google_domain"
-        ],
-        "action": "route",
-        "outbound": "google"
-      },
-      {
-        "rule_set": [
-          "telegram_ip",
-          "telegram_domain"
-        ],
-        "action": "route",
-        "outbound": "telegram"
-      },
-      {
-        "rule_set": [
-          "apple_ip",
-          "apple_domain",
-          "microsoft_domain",
-          "notion_domain"
-        ],
-        "action": "route",
-        "outbound": "!cn-direct"
+        "outbound": "direct"
       },
       {
         "rule_set": [
@@ -425,6 +234,11 @@
         ],
         "action": "route",
         "outbound": "direct"
+      },
+      {
+        "rule_set": "proxy_domain",
+        "action": "route",
+        "outbound": "proxy"
       }
     ],
     "rule_set": [
@@ -439,7 +253,7 @@
         "tag": "cn_domain",
         "type": "remote",
         "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/cn.srs",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/cn.srs",
         "download_detour": "direct"
       },
       {
@@ -447,83 +261,6 @@
         "type": "remote",
         "format": "binary",
         "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "google_ip",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/google.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "google_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/google.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "github_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/github.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "youtube_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/youtube.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "telegram_ip",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/telegram.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "telegram_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/telegram.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "ai_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/category-ai-!cn.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "apple_ip",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/apple.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "apple_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/apple.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "microsoft_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/microsoft.srs",
-        "download_detour": "direct"
-      },
-      {
-        "tag": "notion_domain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/notion.srs",
         "download_detour": "direct"
       }
     ],
@@ -539,9 +276,14 @@
         "detour": "proxy"
       },
       {
-        "tag": "local-dns",
+        "tag": "ali-dns",
         "type": "https",
         "server": "223.5.5.5",
+        "detour": "direct"
+      },
+      {
+        "tag": "local-dns",
+        "type": "local",
         "detour": "direct"
       }
     ],
@@ -564,6 +306,12 @@
         "rule_set": "cn_domain",
         "action": "route",
         "server": "local-dns"
+      },
+      {
+        "rule_set": "proxy_domain",
+        "action": "route",
+        "server": "remote-dns",
+        "client_subnet": "1.1.1.1"
       }
     ],
     "independent_cache": true,
