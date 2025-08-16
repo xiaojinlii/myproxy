@@ -1,11 +1,7 @@
 const { 
   type, 
   name, 
-  platform = 'linux', 
-  fakeip = false,
-  ts_enable = false,
-  ts_url,   // Tailscale 控制地址
-  ts_ak     // Tailscale 认证密钥
+  platform = 'linux',
 } = $arguments
 
 const compatible_outbound = {
@@ -23,44 +19,7 @@ let proxies = await produceArtifact({
 })
 
 
-// ===== 1. enable tailscale ===== //
-if (ts_enable && ts_url && ts_ak) {
-  config.outbounds.push({
-    "tag": "home",
-    "type": "selector",
-    "outbounds": [
-      "direct",
-      "ts-ep"
-    ],
-    "default": "ts-ep"
-  })
-
-  const routeRule = {
-    "ip_cidr": [
-      "100.64.0.0/10",
-      "172.16.1.0/24"
-    ],
-    "outbound": "home"
-  };
-  if (Array.isArray(config.route?.rules)) {
-    config.route.rules.unshift(routeRule); // 插入到最前面
-  }
-
-  config.endpoints = [
-    {
-      "type": "tailscale",
-      "tag": "ts-ep",
-      "control_url": ts_url,
-      "auth_key": ts_ak,
-      "hostname": "singbox",
-      "udp_timeout": "5m",
-      "accept_routes": true
-    }
-  ]
-
-}
-
-// ===== 2. outbounds ===== //
+// ===== outbounds ===== //
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
@@ -94,7 +53,7 @@ config.outbounds.forEach(outbound => {
   }
 });
 
-// ===== 3. linux auto_redirect ===== //
+// ===== linux auto_redirect ===== //
 if (platform === 'linux') {
   config.inbounds = config.inbounds?.map(inbound => {
     if (inbound.type === 'tun') {
@@ -105,48 +64,6 @@ if (platform === 'linux') {
     }
     return inbound
   }) || []
-}
-
-// ===== 5. enable fakeip ===== //
-if (fakeip) {
-  // 1. 添加 dns.servers.fakeip
-  if (Array.isArray(config.dns?.servers)) {
-    const hasFakeIpServer = config.dns.servers.some(s => s.tag === 'fakeip-dns');
-    if (!hasFakeIpServer) {
-      config.dns.servers.push({
-        tag: 'fakeip-dns',
-        type: 'fakeip',
-        inet4_range: "198.18.0.0/15",
-        inet6_range: "fc00::/18"
-      });
-    }
-  }
-
-  // 2. 添加dns.rules
-  if (Array.isArray(config.dns?.rules)) {
-    // Global server 改为 fakeip-dns
-    for (const rule of config.dns.rules) {
-      if (rule.clash_mode === 'Global') {
-        rule.server = 'fakeip-dns';
-        break;
-      }
-    }
-
-    // 在倒数第二个位置插入
-    const ruleToInsert = {
-      "query_type": ["A", "AAAA"],
-      "action": "route",
-      "server": "fakeip-dns",
-      "rewrite_ttl": 1
-    };
-    const insertIndex = Math.max(0, config.dns.rules.length - 1);
-    config.dns.rules.splice(insertIndex, 0, ruleToInsert);
-  }
-
-  // 4. 添加 experimental.cache_file.store_fakeip
-  if (config.experimental?.cache_file) {
-    config.experimental.cache_file.store_fakeip = true;
-  }
 }
 
 $content = JSON.stringify(config, null, 2)

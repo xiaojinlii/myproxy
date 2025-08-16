@@ -1,0 +1,330 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "debug",
+    "timestamp": true
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "ui",
+      "external_ui_download_url": "https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip",
+      "external_ui_download_detour": "direct"
+    },
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true
+    }
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "address": [
+        "172.19.0.0/30",
+        "fdfe:dcba:9876::0/126"
+      ],
+      "stack": "mixed",
+      "auto_route": true,
+      "platform": {
+        "http_proxy": {
+          "enabled": true,
+          "server": "127.0.0.1",
+          "server_port": 7890
+        }
+      }
+    },
+    {
+      "type": "mixed",
+      "listen": "127.0.0.1",
+      "listen_port": 7890
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "type": "selector",
+      "outbounds": [
+        "all",
+        "all-auto",
+        "asia",
+        "asia-auto",
+        "hk",
+        "hk-auto",
+        "tw",
+        "tw-auto",
+        "jp",
+        "jp-auto",
+        "sg",
+        "sg-auto",
+        "us",
+        "us-auto"
+      ],
+      "default": "asia-auto"
+    },
+    {
+      "tag": "all",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "asia",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "hk",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "tw",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "jp",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "sg",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "us",
+      "type": "selector",
+      "outbounds": []
+    },
+    {
+      "tag": "all-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "asia-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "hk-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "tw-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "jp-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "sg-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "us-auto",
+      "type": "urltest",
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "1m",
+      "tolerance": 50
+    },
+    {
+      "tag": "GLOBAL",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct"
+      ],
+      "default": "proxy"
+    },
+    {
+      "tag": "direct",
+      "type": "direct"
+    },
+    {
+      "tag": "final",
+      "type": "selector",
+      "outbounds": [
+        "proxy",
+        "direct"
+      ],
+      "default": "proxy"
+    }
+  ],
+"route": {
+    "default_domain_resolver": {
+      "server": "local-dns"
+    },
+    "rules": [
+      {
+        "action": "sniff",
+        "sniffer": [
+          "http",
+          "tls",
+          "quic",
+          "dns"
+        ],
+        "timeout": "500ms"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "port": 53
+          },
+          {
+            "protocol": "dns"
+          }
+        ],
+        "action": "hijack-dns"
+      },
+      {
+        "ip_is_private": true,
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "clash_mode": "Global",
+        "action": "route",
+        "outbound": "GLOBAL"
+      },
+      {
+        "clash_mode": "Direct",
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "cn_ip",
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "cn_domain",
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": [
+          "cn_ip",
+          "cn_domain"
+        ],
+        "action": "route",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "proxy_domain",
+        "action": "route",
+        "outbound": "proxy"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "cn_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geoip/cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "cn_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/cn.srs",
+        "download_detour": "direct"
+      },
+      {
+        "tag": "proxy_domain",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs",
+        "download_detour": "direct"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "final"
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "remote-dns",
+        "type": "https",
+        "server": "8.8.8.8",
+        "detour": "proxy"
+      },
+      {
+        "tag": "ali-dns",
+        "type": "https",
+        "server": "223.5.5.5",
+        "detour": "direct"
+      },
+      {
+        "tag": "local-dns",
+        "type": "local",
+        "detour": "direct"
+      },
+      {
+        "tag": "fakeip-dns",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      }
+    ],
+    "rules": [
+      {
+        "clash_mode": "Direct",
+        "action": "route",
+        "server": "local-dns"
+      },
+      {
+        "clash_mode": "Global",
+        "action": "route",
+        "server": "fakeip-dns"
+      },
+      {
+        "query_type": "HTTPS",
+        "action": "reject"
+      },
+      {
+        "rule_set": "cn_domain",
+        "action": "route",
+        "server": "local-dns"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "action": "route",
+        "server": "fakeip-dns",
+        "rewrite_ttl": 1
+      }
+    ],
+    "independent_cache": true,
+    "final": "remote-dns"
+  }
+}
