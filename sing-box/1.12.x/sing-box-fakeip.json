@@ -280,13 +280,11 @@
       {
         "tag": "ali-dns",
         "type": "https",
-        "server": "223.5.5.5",
-        "detour": ""
+        "server": "223.5.5.5"
       },
       {
         "tag": "local-dns",
-        "type": "local",
-        "detour": "direct"
+        "type": "local"
       },
       {
         "tag": "fakeip-dns",
