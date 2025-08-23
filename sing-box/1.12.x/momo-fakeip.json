@@ -7,12 +7,13 @@
   "experimental": {
     "clash_api": {
       "external_controller": "0.0.0.0:9090",
-      "external_ui": "ui",
+      "external_ui": "/etc/momo/run/ui",
       "external_ui_download_url": "https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip",
       "external_ui_download_detour": "direct"
     },
     "cache_file": {
       "enabled": true,
+      "path": "/etc/momo/run/cache.db",
       "store_fakeip": true
     }
   },
@@ -22,18 +23,6 @@
       "type": "direct",
       "listen": "::",
       "listen_port": 1053
-    },
-    {
-      "tag": "http-in",
-      "type": "http",
-      "listen": "::",
-      "listen_port": 8080
-    },
-    {
-      "tag": "socks-in",
-      "type": "socks",
-      "listen": "::",
-      "listen_port": 1080
     },
     {
       "tag": "redirect-in",
@@ -297,7 +286,7 @@
         "type": "local"
       },
       {
-        "tag": "fakeip-dns",
+        "tag": "fake-ip-dns-server",
         "type": "fakeip",
         "inet4_range": "198.18.0.0/15",
         "inet6_range": "fc00::/18"
