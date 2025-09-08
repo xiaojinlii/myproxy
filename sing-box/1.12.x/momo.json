@@ -54,53 +54,17 @@
       "outbounds": [
         "all",
         "all-auto",
-        "asia",
         "asia-auto",
-        "hk",
         "hk-auto",
-        "tw",
         "tw-auto",
-        "jp",
         "jp-auto",
-        "sg",
         "sg-auto",
-        "us",
         "us-auto"
       ],
       "default": "asia-auto"
     },
     {
       "tag": "all",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "asia",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "hk",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "tw",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "jp",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "sg",
-      "type": "selector",
-      "outbounds": []
-    },
-    {
-      "tag": "us",
       "type": "selector",
       "outbounds": []
     },
@@ -115,7 +79,12 @@
     {
       "tag": "asia-auto",
       "type": "urltest",
-      "outbounds": [],
+      "outbounds": [
+        "hk-auto",
+        "tw-auto",
+        "jp-auto",
+        "sg-auto"
+      ],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "1m",
       "tolerance": 50
