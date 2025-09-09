@@ -70,6 +70,55 @@ if (platform === 'linux') {
   }) || []
 }
 
+// ===== momo ===== //
+if (platform === 'momo') {
+  // 1. 修改 experimental
+  config.experimental.clash_api.external_ui = '/etc/momo/run/ui'
+  config.experimental.cache_file.path = '/etc/momo/run/cache.db'
+
+  // 2. 修改 hijack-dns
+  if (Array.isArray(config.route?.rules)) {
+    config.route.rules = config.route.rules.map(rule => {
+      if (rule.action === 'hijack-dns') {
+        return {
+          inbound: "dns-in",
+          action: "hijack-dns"
+        }
+      }
+      return rule
+    })
+  }
+
+  // 3. 替换 fakeip tag
+  if (config.dns) {
+    const FAKEIP_DNS_TAG_OLD = 'fakeip-dns'
+    const FAKEIP_DNS_TAG_NEW = 'fake-ip-dns-server'
+
+    if (Array.isArray(config.dns.servers)) {
+      config.dns.servers = config.dns.servers.map(server => {
+        if (server.tag === FAKEIP_DNS_TAG_OLD) {
+          server.tag = FAKEIP_DNS_TAG_NEW
+        }
+        return server
+      })
+    }
+
+    if (Array.isArray(config.dns.rules)) {
+      config.dns.rules = config.dns.rules.map(rule => {
+        if (rule.server === FAKEIP_DNS_TAG_OLD) {
+          rule.server = FAKEIP_DNS_TAG_NEW
+        }
+        return rule
+      })
+    }
+
+    if (config.dns.final === FAKEIP_DNS_TAG_OLD) {
+      config.dns.final = FAKEIP_DNS_TAG_NEW
+    }
+  }
+
+}
+
 $content = JSON.stringify(config, null, 2)
 
 function getTags(proxies, regex) {
