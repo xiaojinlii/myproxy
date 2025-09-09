@@ -139,6 +139,14 @@ if (platform === 'momo') {
       tunInbound.auto_route = false
       tunInbound.auto_redirect = false
       tunInbound.strict_route = false
+
+      // 将 tag 放到第一位
+      const tunIndex = config.inbounds.findIndex(ib => ib.type === 'tun')
+      const { tag, ...rest } = tunInbound
+      config.inbounds[tunIndex] = {
+        tag: tag,
+        ...rest
+      }
     }
   }
 
