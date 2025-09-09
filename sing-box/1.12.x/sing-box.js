@@ -41,6 +41,10 @@ config.outbounds.map(i => {
   if (['us', 'us-auto'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /美|us|unitedstates|united states|🇺🇸/i))
   }
+  if (['other', 'other-auto'].includes(i.tag)) {
+    const regex = /^(?!.*(?:港|hk|hongkong|kong kong|🇭🇰|台|tw|taiwan|🇹🇼|日本|jp|japan|🇯🇵|新|sg|singapore|🇸🇬|美|us|unitedstates|united states|🇺🇸)).*$/i;
+    i.outbounds.push(...getTags(proxies, regex))
+  }
 })
 
 config.outbounds.forEach(outbound => {
