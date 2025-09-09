@@ -1,22 +1,60 @@
 {
-  "log": {
-    "disabled": false,
-    "level": "debug",
-    "timestamp": true
+  "dns": {
+    "servers": [
+      {"tag": "remote-dns", "type": "https", "server": "8.8.8.8", "detour": "proxy"},
+      {"tag": "ali-dns", "type": "https", "server": "223.5.5.5"},
+      {"tag": "local-dns", "type": "local"},
+      {"tag": "fake-ip-dns-server", "type": "fakeip", "inet4_range": "198.18.0.0/15", "inet6_range": "fc00::/18"}
+    ],
+    "rules": [
+      {"clash_mode": "Direct", "server": "local-dns"},
+      {"clash_mode": "Global", "server": "fake-ip-dns-server"},
+      {"query_type": "HTTPS", "action": "reject"},
+      {"rule_set": "geosite-cn", "server": "local-dns"},
+      {"query_type": ["A", "AAAA"], "server": "fake-ip-dns-server", "rewrite_ttl": 1}
+    ],
+    "independent_cache": true,
+    "final": "remote-dns"
   },
-  "experimental": {
-    "clash_api": {
-      "external_controller": "0.0.0.0:9090",
-      "external_ui": "/etc/momo/run/ui",
-      "external_ui_download_url": "https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip",
-      "external_ui_download_detour": "direct",
-      "secret": "6%@ay4^Gu*vjrG4z^*U3"
+  "outbounds": [
+    {"tag": "proxy", "type": "selector", "outbounds": ["all", "all-auto", "asia-auto", "hk-auto", "tw-auto", "jp-auto", "sg-auto", "us-auto", "other-auto"], "default": "asia-auto"},
+    {"tag": "ai", "type": "selector", "outbounds": ["jp-auto", "sg-auto", "us-auto", "other-auto"], "default": "sg-auto"},
+    {"tag": "final", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
+    {"tag": "all", "type": "selector", "outbounds": []},
+    {"tag": "all-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "asia-auto", "type": "urltest", "outbounds": ["hk-auto", "tw-auto", "jp-auto", "sg-auto"], "interval": "1m"},
+    {"tag": "hk-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "tw-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "jp-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "sg-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "us-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "other-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "GLOBAL", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
+    {"tag": "direct", "type": "direct"}
+  ],
+  "route": {
+    "default_domain_resolver": {
+      "server": "local-dns"
     },
-    "cache_file": {
-      "enabled": true,
-      "path": "/etc/momo/run/cache.db",
-      "store_fakeip": true
-    }
+    "rules": [
+      {"action": "sniff", "sniffer": ["http", "tls", "quic", "dns"], "timeout": "500ms"},
+      {"inbound": "dns-in", "action": "hijack-dns"},
+      {"ip_is_private": true, "outbound": "direct"},
+      {"clash_mode": "Global", "outbound": "GLOBAL"},
+      {"clash_mode": "Direct", "outbound": "direct"},
+      {"rule_set": "geosite-ai", "outbound": "ai"},
+      {"rule_set": "geoip-cn", "outbound": "direct"},
+      {"rule_set": "geosite-cn", "outbound": "direct"},
+      {"rule_set": "geosite-!cn", "outbound": "proxy"}
+    ],
+    "rule_set": [
+      {"tag": "geosite-ai", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ai-!cn.srs", "download_detour": "direct"},
+      {"tag": "geosite-!cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-!cn.srs", "download_detour": "direct"},
+      {"tag": "geosite-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.srs", "download_detour": "direct"},
+      {"tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.srs", "download_detour": "direct"}
+    ],
+    "auto_detect_interface": true,
+    "final": "final"
   },
   "inbounds": [
     {
@@ -49,61 +87,23 @@
       "auto_redirect": false
     }
   ],
-  "outbounds": [
-    {"tag": "proxy", "type": "selector", "outbounds": ["all", "all-auto", "asia-auto", "hk-auto", "tw-auto", "jp-auto", "sg-auto", "us-auto", "other-auto"], "default": "asia-auto"},
-    {"tag": "ai", "type": "selector", "outbounds": ["jp-auto", "sg-auto", "us-auto", "other-auto"], "default": "sg-auto"},
-    {"tag": "final", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
-    {"tag": "all", "type": "selector", "outbounds": []},
-    {"tag": "all-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
-    {"tag": "asia-auto", "type": "urltest", "outbounds": ["hk-auto", "tw-auto", "jp-auto", "sg-auto"], "interval": "1m"},
-    {"tag": "hk-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
-    {"tag": "tw-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
-    {"tag": "jp-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
-    {"tag": "sg-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
-    {"tag": "us-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
-    {"tag": "other-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
-    {"tag": "GLOBAL", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
-    {"tag": "direct", "type": "direct"}
-  ],
-"route": {
-    "default_domain_resolver": {
-      "server": "local-dns"
+  "experimental": {
+    "clash_api": {
+      "external_controller": "0.0.0.0:9090",
+      "external_ui": "/etc/momo/run/ui",
+      "external_ui_download_url": "https://ghfast.top/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip",
+      "external_ui_download_detour": "direct",
+      "secret": "6%@ay4^Gu*vjrG4z^*U3"
     },
-    "rules": [
-      {"action": "sniff", "sniffer": ["http", "tls", "quic", "dns"], "timeout": "500ms"},
-      {"inbound": "dns-in", "action": "hijack-dns"},
-      {"ip_is_private": true, "outbound": "direct"},
-      {"clash_mode": "Global", "outbound": "GLOBAL"},
-      {"clash_mode": "Direct", "outbound": "direct"},
-      {"rule_set": "geosite-ai", "outbound": "ai"},
-      {"rule_set": "geoip-cn", "outbound": "direct"},
-      {"rule_set": "geosite-cn", "outbound": "direct"},
-      {"rule_set": "geosite-!cn", "outbound": "proxy"}
-    ],
-    "rule_set": [
-      {"tag": "geosite-ai", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ai-!cn.srs", "download_detour": "direct"},
-      {"tag": "geosite-!cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-!cn.srs", "download_detour": "direct"},
-      {"tag": "geosite-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.srs", "download_detour": "direct"},
-      {"tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.srs", "download_detour": "direct"}
-    ],
-    "auto_detect_interface": true,
-    "final": "final"
+    "cache_file": {
+      "enabled": true,
+      "path": "/etc/momo/run/cache.db",
+      "store_fakeip": true
+    }
   },
-  "dns": {
-    "servers": [
-      {"tag": "remote-dns", "type": "https", "server": "8.8.8.8", "detour": "proxy"},
-      {"tag": "ali-dns", "type": "https", "server": "223.5.5.5"},
-      {"tag": "local-dns", "type": "local"},
-      {"tag": "fake-ip-dns-server", "type": "fakeip", "inet4_range": "198.18.0.0/15", "inet6_range": "fc00::/18"}
-    ],
-    "rules": [
-      {"clash_mode": "Direct", "server": "local-dns"},
-      {"clash_mode": "Global", "server": "fake-ip-dns-server"},
-      {"query_type": "HTTPS", "action": "reject"},
-      {"rule_set": "geosite-cn", "server": "local-dns"},
-      {"query_type": ["A", "AAAA"], "server": "fake-ip-dns-server", "rewrite_ttl": 1}
-    ],
-    "independent_cache": true,
-    "final": "remote-dns"
+  "log": {
+    "disabled": false,
+    "level": "debug",
+    "timestamp": true
   }
 }
