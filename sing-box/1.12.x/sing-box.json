@@ -52,7 +52,8 @@
         "tw-auto",
         "jp-auto",
         "sg-auto",
-        "us-auto"
+        "us-auto",
+        "other-auto"
       ],
       "default": "asia-auto"
     },

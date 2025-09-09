@@ -30,7 +30,7 @@
   "config/display-proxies-relationship": "true",
   "config/connection-sort-direction": "asc",
   "config/swipe-in-pages": "true",
-  "config/collapse-group-map": "{\"proxy\":false,\"all\":false,\"all-auto\":false,\"asia-auto\":false,\"hk-auto\":false,\"tw-auto\":false,\"jp-auto\":false,\"sg-auto\":false,\"us-auto\":false,\"final\":false}",
+  "config/collapse-group-map": "{\"proxy\":false,\"all\":false,\"all-auto\":false,\"asia-auto\":false,\"hk-auto\":false,\"tw-auto\":false,\"jp-auto\":false,\"sg-auto\":false,\"us-auto\":false,\"final\":false,\"other-auto\":false}",
   "config/split-overview-page": "true",
   "config/speedtest-timeout": "5000",
   "config/log-retention-limit": "1000",
