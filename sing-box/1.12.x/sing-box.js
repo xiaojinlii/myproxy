@@ -57,17 +57,24 @@ config.outbounds.forEach(outbound => {
   }
 });
 
-// ===== linux auto_redirect ===== //
+// ===== linux ===== //
 if (platform === 'linux') {
-  config.inbounds = config.inbounds?.map(inbound => {
-    if (inbound.type === 'tun') {
-      return {
-        ...inbound,
-        auto_redirect: true
-      }
+  if (Array.isArray(config.inbounds)) {
+    const tunInbound = config.inbounds.find(inbound => inbound.type === 'tun')
+    if (tunInbound) {
+      tunInbound.auto_redirect = true
     }
-    return inbound
-  }) || []
+  }
+}
+
+// ===== win ===== //
+if (platform === 'win') {
+  if (Array.isArray(config.inbounds)) {
+    const mixedInbound = config.inbounds.find(inbound => inbound.type === 'mixed')
+    if (mixedInbound) {
+      mixedInbound.set_system_proxy = true
+    }
+  }
 }
 
 // ===== momo ===== //
@@ -114,6 +121,24 @@ if (platform === 'momo') {
 
     if (config.dns.final === FAKEIP_DNS_TAG_OLD) {
       config.dns.final = FAKEIP_DNS_TAG_NEW
+    }
+  }
+
+  // 4. 修改 inbounds
+  if (Array.isArray(config.inbounds)) {
+    config.inbounds.unshift({
+        tag: "dns-in",
+        type: "direct",
+        listen: "::",
+        listen_port: 1053
+    })
+
+    const tunInbound = config.inbounds.find(inbound => inbound.type === 'tun')
+    if (tunInbound) {
+      tunInbound.tag = 'tun-in'
+      tunInbound.auto_route = false
+      tunInbound.auto_redirect = false
+      tunInbound.strict_route = false
     }
   }
 
