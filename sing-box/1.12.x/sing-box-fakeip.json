@@ -18,7 +18,6 @@
   },
   "outbounds": [
     {"tag": "proxy", "type": "selector", "outbounds": ["all", "all-auto", "asia-auto", "hk-auto", "tw-auto", "jp-auto", "sg-auto", "us-auto", "other-auto"], "default": "asia-auto"},
-    {"tag": "ai", "type": "selector", "outbounds": ["jp-auto", "sg-auto", "us-auto", "other-auto"], "default": "sg-auto"},
     {"tag": "final", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
     {"tag": "all", "type": "selector", "outbounds": []},
     {"tag": "all-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
