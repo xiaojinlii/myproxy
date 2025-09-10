@@ -27,7 +27,7 @@
   "config/icon-reflect-list": "[]",
   "config/connection-sort-type": "host",
   "config/medium-latency": "800",
-  "config/display-proxies-relationship": "true",
+  "config/display-proxies-relationship": "false",
   "config/connection-sort-direction": "asc",
   "config/swipe-in-pages": "true",
   "config/collapse-group-map": "{\"proxy\":false,\"all\":false,\"all-auto\":false,\"asia-auto\":false,\"hk-auto\":false,\"tw-auto\":false,\"jp-auto\":false,\"sg-auto\":false,\"us-auto\":false,\"final\":false,\"other-auto\":false}",
