@@ -10,6 +10,7 @@
       {"clash_mode": "Direct", "server": "local-dns"},
       {"clash_mode": "Global", "server": "fakeip-dns"},
       {"query_type": "HTTPS", "action": "reject"},
+      {"rule_set": "geosite-self-cn", "server": "local-dns"},
       {"rule_set": "geosite-cn", "server": "local-dns"},
       {"query_type": ["A", "AAAA"], "server": "fakeip-dns", "rewrite_ttl": 1}
     ],

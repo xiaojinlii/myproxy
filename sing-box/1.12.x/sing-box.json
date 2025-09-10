@@ -9,6 +9,7 @@
       {"clash_mode": "Direct", "server": "local-dns"},
       {"clash_mode": "Global", "server": "remote-dns"},
       {"query_type": "HTTPS", "action": "reject"},
+      {"rule_set": "geosite-self-cn", "server": "local-dns"},
       {"rule_set": "geosite-cn", "server": "local-dns"},
       {"rule_set": "geosite-!cn", "server": "remote-dns", "client_subnet": "1.1.1.1"}
     ],
