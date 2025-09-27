@@ -2,6 +2,7 @@ const {
   type, 
   name, 
   platform = 'linux',
+  home = false,
 } = $arguments
 
 const compatible_outbound = {
@@ -159,6 +160,40 @@ if (platform === 'momo') {
     }
   }
 
+}
+
+// ===== home ===== //
+if (home === true) {
+    const home_rules = [
+        {
+            "type": "logical",
+            "mode": "and",
+            "rules": [
+                { "wifi_ssid": ["朕的wifi，福泽天下", "朕的wifi，共享天下"] },
+                { "ip_cidr": ["172.16.1.0/24"] }
+            ],
+            "outbound": "direct"
+        },
+        {
+            "ip_cidr": ["172.16.1.0/24"],
+            "outbound": "home"
+        }
+    ];
+
+    if (Array.isArray(config.route?.rules)) {
+        // 1. 找到 {"ip_is_private": true, "outbound": "direct"} 的索引
+        const privateIpDirectIndex = config.route.rules.findIndex(rule => 
+            rule.ip_is_private === true
+        );
+
+        if (privateIpDirectIndex !== -1) {
+            // 2. 将 home_rules 插入到找到的规则之前
+            config.route.rules.splice(privateIpDirectIndex, 0, ...home_rules);
+        } else {
+            // 如果默认的 private IP 规则不存在，将 home_rules 插入到规则数组的开头
+            config.route.rules.unshift(...home_rules);
+        }
+    }
 }
 
 $content = JSON.stringify(config, null, 2)

@@ -42,11 +42,9 @@
     "rules": [
       {"action": "sniff", "sniffer": ["http", "tls", "quic", "dns"], "timeout": "500ms"},
       {"type": "logical", "mode": "or", "rules": [{"port": 53}, {"protocol": "dns"}], "action": "hijack-dns"},
+      {"ip_is_private": true, "outbound": "direct"},
       {"clash_mode": "Global", "outbound": "GLOBAL"},
       {"clash_mode": "Direct", "outbound": "direct"},
-      {"type": "logical", "mode": "and", "rules": [{"wifi_ssid": ["朕的wifi，福泽天下", "朕的wifi，共享天下"]}, {"ip_cidr": "172.16.1.0/24"}], "outbound": "direct"},
-      {"ip_cidr": "172.16.1.0/24", "outbound": "home"},
-      {"ip_is_private": true, "outbound": "direct"},
       {"rule_set": "geosite-ai", "outbound": "ai"},
       {"rule_set": "geosite-tiktok", "outbound": "tiktok"},
       {"rule_set": ["geosite-spotify", "geosite-youtube", "geosite-hbo", "geosite-disney", "geosite-netflix"], "outbound": "media"},
