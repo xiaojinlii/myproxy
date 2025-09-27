@@ -163,7 +163,7 @@ if (platform === 'momo') {
 }
 
 // ===== home ===== //
-if (home === true) {
+if (home) {
     const home_rules = [
         {
             "type": "logical",

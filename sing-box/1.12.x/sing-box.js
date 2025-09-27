@@ -164,7 +164,7 @@ if (platform === 'momo') {
 
 console.log(`================>home:${home}`);
 // ===== home ===== //
-if (home === true) {
+if (home) {
   console.log(`================>home:11111`);
     const home_rules = [
         {
