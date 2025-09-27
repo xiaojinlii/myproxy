@@ -24,6 +24,10 @@ let proxies = await produceArtifact({
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
+  if (i.tag === 'home') {
+    return;
+  }
+
   if (['all', 'all-auto'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies))
   }
@@ -162,11 +166,9 @@ if (platform === 'momo') {
 
 }
 
-console.log(`================>home:${home}`);
-console.log('home type:', typeof home);
+
 // ===== home ===== //
-if (home) {
-  console.log(`================>home:11111`);
+if (home === true || home === 'true') {
     const home_rules = [
         {
             "type": "logical",
