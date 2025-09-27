@@ -163,6 +163,7 @@ if (platform === 'momo') {
 }
 
 console.log(`================>home:${home}`);
+console.log('home type:', typeof home);
 // ===== home ===== //
 if (home) {
   console.log(`================>home:11111`);
