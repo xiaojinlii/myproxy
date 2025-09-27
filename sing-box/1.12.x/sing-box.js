@@ -204,5 +204,6 @@ if (home === true || home === 'true') {
 $content = JSON.stringify(config, null, 2)
 
 function getTags(proxies, regex) {
-  return (regex ? proxies.filter(p => regex.test(p.tag)) : proxies).map(p => p.tag)
+  const filteredProxies = proxies.filter(p => p.tag !== 'home');
+  return (regex ? filteredProxies.filter(p => regex.test(p.tag)) : filteredProxies).map(p => p.tag)
 }
