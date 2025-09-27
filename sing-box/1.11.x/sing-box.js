@@ -1,4 +1,9 @@
-const { type, name, platform = 'linux', fakeip = false } = $arguments
+const { 
+  type, 
+  name, 
+  platform = 'linux',
+} = $arguments
+
 const compatible_outbound = {
   tag: 'COMPATIBLE',
   type: 'direct',
@@ -13,27 +18,42 @@ let proxies = await produceArtifact({
   produceType: 'internal',
 })
 
+
+// ===== outbounds ===== //
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
   if (['all', 'all-auto'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies))
   }
-  if (['hk', 'hk-auto', 'asia', 'asia-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /港|hk|hongkong|kong kong|🇭🇰/i))
+
+  if (['stream-auto'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /流媒体/i));
   }
-  if (['tw', 'tw-auto', 'asia', 'asia-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /台|tw|taiwan|🇹🇼/i))
+
+  if (['hk', 'hk-auto'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(港|hk|hongkong|kong kong|🇭🇰)/i));
   }
-  if (['jp', 'jp-auto', 'asia', 'asia-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /日本|jp|japan|🇯🇵/i))
+  if (['tw', 'tw-auto'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(台|tw|taiwan|🇹🇼)/i));
   }
-  if (['sg', 'sg-auto', 'asia', 'asia-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(?:us)).*(新|sg|singapore|🇸🇬)/i))
+  if (['jp', 'jp-auto'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(日本|jp|japan|🇯🇵)/i));
+  }
+  if (['kr', 'kr-auto'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(韩|kr|korea|🇰🇷)/i));
+  }
+  if (['sg', 'sg-auto'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体)(?!.*(?:us)).*(新|sg|singapore|🇸🇬)/i));
   }
   if (['us', 'us-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /美|us|unitedstates|united states|🇺🇸/i))
+    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(美|us|unitedstates|united states|🇺🇸)/i));
   }
+  if (['other', 'other-auto'].includes(i.tag)) {
+    const regex = /^(?!.*流媒体)(?!.*(?:港|hk|hongkong|kong kong|🇭🇰|台|tw|taiwan|🇹🇼|日本|jp|japan|🇯🇵|韩|kr|korea|🇰🇷|新|sg|singapore|🇸🇬|美|us|unitedstates|united states|🇺🇸)).*$/i;
+    i.outbounds.push(...getTags(proxies, regex));
+  }
+
 })
 
 config.outbounds.forEach(outbound => {
@@ -46,79 +66,99 @@ config.outbounds.forEach(outbound => {
   }
 });
 
-// Add auto_redirect to tun inbounds if platform is linux
+// ===== linux ===== //
 if (platform === 'linux') {
-  config.inbounds = config.inbounds?.map(inbound => {
-    if (inbound.type === 'tun') {
-      return {
-        ...inbound,
-        auto_redirect: true
-      }
+  if (Array.isArray(config.inbounds)) {
+    const tunInbound = config.inbounds.find(inbound => inbound.type === 'tun')
+    if (tunInbound) {
+      tunInbound.auto_redirect = true
     }
-    return inbound
-  }) || []
-}
-
-// === 修改 local-dns 的 address，根据平台类型 ===
-const localDns = config.dns?.servers?.find(s => s.tag === 'local-dns');
-if (localDns) {
-  if (['ios', 'android'].includes(platform)) {
-    localDns.address = 'local';
-  } else if (['linux', 'mac', 'win'].includes(platform)) {
-    localDns.address = 'dhcp://auto';
-  } else {
-    // 其他平台不做修改
-    // localDns.address = 'dhcp://auto';
   }
 }
 
-// fakeip 配置
-if (fakeip) {
-  // 1. 添加 dns.fakeip
+// ===== win ===== //
+if (platform === 'win') {
+  if (Array.isArray(config.inbounds)) {
+    const mixedInbound = config.inbounds.find(inbound => inbound.type === 'mixed')
+    if (mixedInbound) {
+      mixedInbound.set_system_proxy = true
+    }
+  }
+}
+
+// ===== momo ===== //
+if (platform === 'momo') {
+  // 1. 修改 experimental
+  config.experimental.clash_api.external_ui = '/etc/momo/run/ui'
+  config.experimental.cache_file.path = '/etc/momo/run/cache.db'
+
+  // 2. 修改 hijack-dns
+  if (Array.isArray(config.route?.rules)) {
+    config.route.rules = config.route.rules.map(rule => {
+      if (rule.action === 'hijack-dns') {
+        return {
+          inbound: "dns-in",
+          action: "hijack-dns"
+        }
+      }
+      return rule
+    })
+  }
+
+  // 3. 替换 fakeip tag
   if (config.dns) {
-    config.dns.fakeip = {
-      enabled: true,
-      inet4_range: "198.18.0.0/15",
-      inet6_range: "fc00::/18"
-    };
-  }
+    const FAKEIP_DNS_TAG_OLD = 'fakeip-dns'
+    const FAKEIP_DNS_TAG_NEW = 'fake-ip-dns-server'
 
-  // 2. 添加 dns.servers.fakeip
-  if (Array.isArray(config.dns?.servers)) {
-    const hasFakeIpServer = config.dns.servers.some(s => s.tag === 'fakeip-dns');
-    if (!hasFakeIpServer) {
-      config.dns.servers.push({
-        tag: 'fakeip-dns',
-        address: 'fakeip'
-      });
+    if (Array.isArray(config.dns.servers)) {
+      config.dns.servers = config.dns.servers.map(server => {
+        if (server.tag === FAKEIP_DNS_TAG_OLD) {
+          server.tag = FAKEIP_DNS_TAG_NEW
+        }
+        return server
+      })
+    }
+
+    if (Array.isArray(config.dns.rules)) {
+      config.dns.rules = config.dns.rules.map(rule => {
+        if (rule.server === FAKEIP_DNS_TAG_OLD) {
+          rule.server = FAKEIP_DNS_TAG_NEW
+        }
+        return rule
+      })
+    }
+
+    if (config.dns.final === FAKEIP_DNS_TAG_OLD) {
+      config.dns.final = FAKEIP_DNS_TAG_NEW
     }
   }
 
-  // 3. 添加dns.rules
-  if (Array.isArray(config.dns?.rules)) {
-    // Global server 改为 fakeip-dns
-    for (const rule of config.dns.rules) {
-      if (rule.clash_mode === 'Global') {
-        rule.server = 'fakeip-dns';
-        break;
+  // 4. 修改 inbounds
+  if (Array.isArray(config.inbounds)) {
+    config.inbounds.unshift({
+        tag: "dns-in",
+        type: "direct",
+        listen: "::",
+        listen_port: 1053
+    })
+
+    const tunInbound = config.inbounds.find(inbound => inbound.type === 'tun')
+    if (tunInbound) {
+      tunInbound.tag = 'tun-in'
+      tunInbound.auto_route = false
+      tunInbound.auto_redirect = false
+      tunInbound.strict_route = false
+
+      // 将 tag 放到第一位
+      const tunIndex = config.inbounds.findIndex(ib => ib.type === 'tun')
+      const { tag, ...rest } = tunInbound
+      config.inbounds[tunIndex] = {
+        tag: tag,
+        ...rest
       }
     }
-
-    // 在倒数第二个位置插入
-    const ruleToInsert = {
-      "query_type": ["A", "AAAA"],
-      "action": "route",
-      "server": "fakeip-dns",
-      "rewrite_ttl": 1
-    };
-    const insertIndex = Math.max(0, config.dns.rules.length - 1);
-    config.dns.rules.splice(insertIndex, 0, ruleToInsert);
   }
 
-  // 4. 添加 experimental.cache_file.store_fakeip
-  if (config.experimental?.cache_file) {
-    config.experimental.cache_file.store_fakeip = true;
-  }
 }
 
 $content = JSON.stringify(config, null, 2)

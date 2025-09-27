@@ -3,16 +3,17 @@
     "servers": [
       {"tag": "remote-dns", "address": "https://8.8.8.8/dns-query", "detour": "proxy"},
       {"tag": "ali-dns", "address": "https://8.8.8.8/dns-query"},
-      {"tag": "local-dns", "address": "local"}
+      {"tag": "local-dns", "address": "local"},
+      {"tag": "fakeip-dns", "address": "fakeip"}
     ],
     "rules": [
       {"outbound": "any", "server": "local-dns", "disable_cache": true},
       {"clash_mode": "Direct", "server": "local-dns"},
-      {"clash_mode": "Global", "server": "remote-dns"},
+      {"clash_mode": "Global", "server": "fakeip-dns"},
       {"query_type": "HTTPS", "action": "reject"},
       {"rule_set": "geosite-self-cn", "server": "local-dns"},
       {"rule_set": "geosite-cn", "server": "local-dns"},
-      {"rule_set": "geosite-!cn", "server": "remote-dns", "client_subnet": "1.1.1.1"}
+      {"query_type": ["A", "AAAA"], "server": "fakeip-dns", "rewrite_ttl": 1}
     ],
     "fakeip": {
       "enabled": true,
@@ -114,7 +115,8 @@
       "secret": "6%@ay4^Gu*vjrG4z^*U3"
     },
     "cache_file": {
-      "enabled": true
+      "enabled": true,
+      "store_fakeip": true
     }
   },
   "log": {
