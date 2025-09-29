@@ -3,7 +3,7 @@ const {
   name, 
   platform = 'linux',
   home = false,
-  fakeip = false，
+  fakeip = false,
 } = $arguments
 
 const compatible_outbound = {
