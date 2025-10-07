@@ -2,7 +2,7 @@
   "config/auto-disconnect-idle-udp-time": "300",
   "config/display-latency-in-rule": "true",
   "config/ipv6-map": "{}",
-  "setup/api-list": "[{\"protocol\":\"http\",\"host\":\"127.0.0.1\",\"port\":\"9090\",\"secondaryPath\":\"\",\"password\":\"6%@ay4^Gu*vjrG4z^*U3\",\"label\":\"\",\"uuid\":\"d0799400-e101-44e5-aa90-23d544ad1fb2\"},{\"protocol\":\"http\",\"host\":\"172.16.1.9\",\"port\":\"9090\",\"secondaryPath\":\"\",\"password\":\"6%@ay4^Gu*vjrG4z^*U3\",\"label\":\"\",\"uuid\":\"c79a4925-8c9b-4752-b0d9-9ac9094eb9dd\"}]",
+  "setup/api-list": "[{\"protocol\":\"http\",\"host\":\"localhost\",\"port\":\"9090\",\"secondaryPath\":\"\",\"password\":\"6%@ay4^Gu*vjrG4z^*U3\",\"label\":\"\",\"uuid\":\"d0799400-e101-44e5-aa90-23d544ad1fb2\"},{\"protocol\":\"http\",\"host\":\"172.16.1.9\",\"port\":\"9090\",\"secondaryPath\":\"\",\"password\":\"6%@ay4^Gu*vjrG4z^*U3\",\"label\":\"\",\"uuid\":\"c79a4925-8c9b-4752-b0d9-9ac9094eb9dd\"}]",
   "config/font": "MiSans",
   "config/scroll-animation-effect": "true",
   "config/auto-upgrade-core": "false",
