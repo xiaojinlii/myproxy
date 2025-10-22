@@ -25,10 +25,6 @@ let proxies = await produceArtifact({
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
-  if (i.tag === 'home') {
-    return;
-  }
-
   if (['all', 'all-auto'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies))
   }
@@ -127,7 +123,53 @@ if (fakeip === true || fakeip === 'true') {
 }
 
 
-// ===== linux ===== //
+// ===== home ===== //
+if (home === true || home === 'true') {
+  // 设备连接家里wifi时，访问局域网服务，直接通过路由表进行路由，不会进入singbox内核，所以不用额外处理
+  // macOS通过命令netstat -nr查看路由表，来证实上述结论
+  // 但iOS和Android查看不了路由表，无法证实，但确实没进入singbox内核
+
+  // 1. 添加 home outbounds
+  const home_urltest = {
+    tag: 'home',
+    type: 'urltest',
+    outbounds: [],
+    interval: '1m'
+  };
+
+  // 将所有包含home的节点插入到此分组中
+  home_urltest.outbounds.push(...getTagsWithHome(proxies));
+
+  // 找到倒数第三个位置的索引
+  const insertIndex = Math.max(0, config.outbounds.length - 2);
+  config.outbounds.splice(insertIndex, 0, home_urltest);
+
+  // 2. 添加 home rules
+  const home_rules = [
+    {
+        "ip_cidr": ["172.16.1.0/24"],
+        "outbound": "home"
+    }
+  ];
+
+  if (Array.isArray(config.route?.rules)) {
+    // 找到 {"ip_is_private": true, "outbound": "direct"} 的索引
+    const privateIpDirectIndex = config.route.rules.findIndex(rule => 
+        rule.ip_is_private === true
+    );
+
+    if (privateIpDirectIndex !== -1) {
+        // 将 home_rules 插入到找到的规则之前
+        config.route.rules.splice(privateIpDirectIndex, 0, ...home_rules);
+    } else {
+        // 如果默认的 private IP 规则不存在，将 home_rules 插入到规则数组的开头
+        config.route.rules.unshift(...home_rules);
+    }
+  }
+}
+
+
+// ===== platform ===== //
 if (platform === 'linux') {
   if (Array.isArray(config.inbounds)) {
     const tunInbound = config.inbounds.find(inbound => inbound.type === 'tun')
@@ -136,9 +178,7 @@ if (platform === 'linux') {
     }
   }
 }
-
-// ===== win ===== //
-if (platform === 'win') {
+else if (platform === 'win') {
   if (Array.isArray(config.inbounds)) {
     const mixedInbound = config.inbounds.find(inbound => inbound.type === 'mixed')
     if (mixedInbound) {
@@ -146,9 +186,7 @@ if (platform === 'win') {
     }
   }
 }
-
-// ===== momo ===== //
-if (platform === 'momo') {
+else if (platform === 'momo') {
   // 1. 修改 experimental
   config.experimental.clash_api.external_ui = '/etc/momo/run/ui'
   config.experimental.cache_file.path = '/etc/momo/run/cache.db'
@@ -223,37 +261,15 @@ if (platform === 'momo') {
 }
 
 
-// ===== home ===== //
-if (home === true || home === 'true') {
-  // 设备连接家里wifi时，访问局域网服务，直接通过路由表进行路由，不会进入singbox内核，所以不用额外处理
-  // macOS通过命令netstat -nr查看路由表，来证实上述结论
-  // 但iOS和Android查看不了路由表，无法证实，但确实没进入singbox内核
-  const home_rules = [
-    {
-        "ip_cidr": ["172.16.1.0/24"],
-        "outbound": "home"
-    }
-  ];
-
-  if (Array.isArray(config.route?.rules)) {
-    // 1. 找到 {"ip_is_private": true, "outbound": "direct"} 的索引
-    const privateIpDirectIndex = config.route.rules.findIndex(rule => 
-        rule.ip_is_private === true
-    );
-
-    if (privateIpDirectIndex !== -1) {
-        // 2. 将 home_rules 插入到找到的规则之前
-        config.route.rules.splice(privateIpDirectIndex, 0, ...home_rules);
-    } else {
-        // 如果默认的 private IP 规则不存在，将 home_rules 插入到规则数组的开头
-        config.route.rules.unshift(...home_rules);
-    }
-  }
-}
-
 $content = JSON.stringify(config, null, 2)
 
 function getTags(proxies, regex) {
-  const filteredProxies = proxies.filter(p => p.tag !== 'home');
+  const filteredProxies = proxies.filter(p => !/home/i.test(p.tag));
   return (regex ? filteredProxies.filter(p => regex.test(p.tag)) : filteredProxies).map(p => p.tag)
+}
+
+function getTagsWithHome(proxies) {
+  // 此函数用于获取所有 tag 包含 'home' 的节点
+  const filteredProxies = proxies.filter(p => /home/i.test(p.tag));
+  return filteredProxies.map(p => p.tag)
 }
