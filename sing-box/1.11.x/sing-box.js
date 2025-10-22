@@ -132,9 +132,8 @@ if (home === true || home === 'true') {
   // 1. 添加 home outbounds
   const home_urltest = {
     tag: 'home',
-    type: 'urltest',
-    outbounds: [],
-    interval: '1m'
+    type: 'selector',
+    outbounds: []
   };
 
   // 将所有包含home的节点插入到此分组中
