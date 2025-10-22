@@ -1,0 +1,1 @@
+1. windows, fakeip环境，GithubDesktop不能pull和push
