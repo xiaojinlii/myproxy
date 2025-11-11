@@ -56,6 +56,11 @@ config.outbounds.map(i => {
     i.outbounds.push(...getTags(proxies, regex));
   }
 
+  if (['ai-auto'].includes(i.tag)) {
+    const regex = /^(?!.*流媒体)(?=.*IEPL)(?!.*(?:港|hk|hongkong|kong kong|🇭🇰|台|tw|taiwan|🇹🇼)).*$/i;
+    i.outbounds.push(...getTags(proxies, regex));
+  }
+
 })
 
 config.outbounds.forEach(outbound => {

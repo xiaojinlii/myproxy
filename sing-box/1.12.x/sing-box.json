@@ -18,11 +18,12 @@
   },
   "outbounds": [
     {"tag": "proxy", "type": "selector", "outbounds": ["all", "all-auto", "hk-auto", "tw-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto", "stream-auto"], "default": "all-auto"},
-    {"tag": "ai", "type": "selector", "outbounds": ["proxy", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto"], "default": "sg-auto"},
+    {"tag": "ai", "type": "selector", "outbounds": ["proxy", "ai-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto"], "default": "ai-auto"},
     {"tag": "tiktok", "type": "selector", "outbounds": ["proxy", "all", "all-auto", "hk-auto", "tw-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto", "stream-auto"]},
     {"tag": "media", "type": "selector", "outbounds": ["proxy", "all", "all-auto", "hk-auto", "tw-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto", "stream-auto"]},
     {"tag": "final", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
     {"tag": "all", "type": "selector", "outbounds": []},
+    {"tag": "ai-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
     {"tag": "all-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
     {"tag": "hk-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
     {"tag": "tw-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
