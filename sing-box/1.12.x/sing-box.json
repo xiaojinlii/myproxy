@@ -18,7 +18,7 @@
   },
   "outbounds": [
     {"tag": "proxy", "type": "selector", "outbounds": ["all", "all-auto", "hk-auto", "tw-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto", "stream-auto"], "default": "all-auto"},
-    {"tag": "ai", "type": "selector", "outbounds": ["proxy", "ai-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto"], "default": "ai-auto"},
+    {"tag": "ai", "type": "selector", "outbounds": ["all", "ai-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto"], "default": "ai-auto"},
     {"tag": "tiktok", "type": "selector", "outbounds": ["proxy", "all", "all-auto", "hk-auto", "tw-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto", "stream-auto"]},
     {"tag": "media", "type": "selector", "outbounds": ["proxy", "all", "all-auto", "hk-auto", "tw-auto", "jp-auto", "kr-auto", "sg-auto", "us-auto", "other-auto", "stream-auto"]},
     {"tag": "final", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
