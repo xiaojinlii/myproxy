@@ -47,7 +47,7 @@
   "config/ipv6-test": "false",
   "config/custom-themes": "[]",
   "config/independent-latency-test": "true",
-  "config/hide-unavailable-proxies": "true",
+  "config/hide-unavailable-proxies": "false",
   "config/table-grouping": "[]",
   "config/show-ip-and-connection-info": "true",
   "config/use-connecticon-card": "false",
