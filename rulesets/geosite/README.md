@@ -4,5 +4,7 @@
 
 ```shell
 sing-box rule-set compile --output self-cn.srs self-cn.json
+
+sing-box rule-set compile --output self-download.srs self-download.json
 ```
 
