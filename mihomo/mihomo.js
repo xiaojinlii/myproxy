@@ -43,7 +43,7 @@ if (home === true || home === 'true') {
     homeProvider['health-check'].url = 'https://connectivitycheck.platform.hicloud.com/generate_204'
     config['proxy-providers'][homeProviderName] = homeProvider
 
-    // 2. 修改proxy-groups
+    // 2. 修改 groups
     const newFilter = "^(?!(直连|home.*)).*$"
     config['proxy-groups'].forEach(group => {
         if (group.name === '♻️ 自动选择' || group.name === '🌐 全部节点') {
@@ -51,14 +51,18 @@ if (home === true || home === 'true') {
         }
     })
 
-    // 3. 添加home group
+    // 3. 添加 home group
     const homeGroup = {
-        name: '🐬 home', 
+        name: 'HOME', 
         type: 'select', 
         'include-all': true, 
         filter: 'home.*'
     }
     config['proxy-groups'].push(homeGroup)
+
+    // 4. 添加 home rule
+    const homeRule = 'IP-CIDR,172.16.1.0/24,HOME,no-resolve'
+    config.rules.unshift(homeRule)
 }
 
 
