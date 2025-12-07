@@ -6,7 +6,7 @@ const {
 
 const config = ProxyUtils.yaml.safeLoad($files[0])
 
-const namesArray = name ? name.split('|') : []
+const namesArray = names ? names.split('|') : []
 
 if (namesArray.length > 0) {
     namesArray.forEach(providerName => {
@@ -32,7 +32,7 @@ if (namesArray.length > 0) {
 if (home === true || home === 'true') {
   const providerUrl = `${url}/Home`
   homeProvider = {
-      url: 'http://172.16.1.10:47884/Q2s3o3h9z8yLhBMFqGNo/download/%E8%87%AA%E5%BB%BA%E8%8A%82%E7%82%B9',
+      url: providerUrl,
       type: 'http',
       interval: 86400,
       'health-check': {
