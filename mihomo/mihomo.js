@@ -6,8 +6,8 @@ const {
 
 const config = ProxyUtils.yaml.safeLoad($files[0])
 
+config['proxy-providers'] = {}
 const namesArray = names ? names.split('|') : []
-
 if (namesArray.length > 0) {
     namesArray.forEach(providerName => {
         // 使用 providerName 作为 key，例如 'name1', 'name2'
