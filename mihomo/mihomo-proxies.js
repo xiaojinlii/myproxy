@@ -25,8 +25,14 @@ config.proxies.unshift(...clashMetaProxies)
 
 // ===== home ===== //
 if (home === true || home === 'true') {
-    // 1. 添加 provider
-
+    // 1. 添加 proxies
+    let clashMetaProxies = await produceArtifact({
+      name: 'Home',
+      type: 'subscription',
+      platform: 'ClashMeta',
+      produceType: 'internal',
+    })
+    config.proxies.unshift(...clashMetaProxies)
 
     // 2. 修改 groups
     const newFilter = "^(?!(直连|home.*)).*$"
