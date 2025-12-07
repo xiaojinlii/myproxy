@@ -124,6 +124,7 @@ rules:
   - RULE-SET,ai,🤖 AI
   - RULE-SET,youtube_domain,📹 Media
   - RULE-SET,apple_domain,直连
+  - RULE-SET,netflix_domain,📹 Media
   - RULE-SET,apple_ip,直连
   - RULE-SET,netflix_ip,📹 Media
   - RULE-SET,geolocation-!cn,🚀 默认代理
