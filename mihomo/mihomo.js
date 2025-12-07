@@ -41,7 +41,7 @@ if (home === true || home === 'true') {
     homeProvider.url = `${url}/${homeProviderName}`
     homeProvider['health-check'] = { ...providerTemplate['health-check'] }
     homeProvider['health-check'].url = 'https://connectivitycheck.platform.hicloud.com/generate_204'
-    config['proxy-providers'].push(homeProvider)
+    config['proxy-providers'][homeProviderName] = homeProvider
 
     // 2. 修改proxy-groups
     const newFilter = "^(?!(直连|home.*)).*$"
