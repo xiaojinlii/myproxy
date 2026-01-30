@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "xiaojinli.fun"
+      ],
+      "ip_cidr": [
+        "172.16.1.0/24"
+      ]
+    }
+  ]
+}

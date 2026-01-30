@@ -129,7 +129,7 @@ if (home === true || home === 'true') {
   // 2. 添加 home rules
   const home_rules = [
     {
-        "ip_cidr": ["172.16.1.0/24"],
+        "rule_set": "geo-home",
         "outbound": "home"
     }
   ];
