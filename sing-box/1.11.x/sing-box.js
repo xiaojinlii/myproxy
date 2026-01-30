@@ -29,35 +29,20 @@ config.outbounds.map(i => {
     i.outbounds.push(...getTags(proxies))
   }
 
-  if (['stream-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /流媒体/i));
-  }
-
   if (['hk', 'hk-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(港|hk|hongkong|kong kong|🇭🇰)/i));
-  }
-  if (['tw', 'tw-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(台|tw|taiwan|🇹🇼)/i));
+    i.outbounds.push(...getTags(proxies, /(港|hk|hongkong|kong kong|🇭🇰)/i));
   }
   if (['jp', 'jp-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(日本|jp|japan|🇯🇵)/i));
-  }
-  if (['kr', 'kr-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(韩|kr|korea|🇰🇷)/i));
+    i.outbounds.push(...getTags(proxies, /(日本|jp|japan|🇯🇵)/i));
   }
   if (['sg', 'sg-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体)(?!.*(?:us)).*(新|sg|singapore|🇸🇬)/i));
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:us)).*(新|sg|singapore|🇸🇬)/i));
   }
   if (['us', 'us-auto'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*流媒体).*(美|us|unitedstates|united states|🇺🇸)/i));
+    i.outbounds.push(...getTags(proxies, /(美|us|unitedstates|united states|🇺🇸)/i));
   }
   if (['other', 'other-auto'].includes(i.tag)) {
-    const regex = /^(?!.*流媒体)(?!.*(?:港|hk|hongkong|kong kong|🇭🇰|台|tw|taiwan|🇹🇼|日本|jp|japan|🇯🇵|韩|kr|korea|🇰🇷|新|sg|singapore|🇸🇬|美|us|unitedstates|united states|🇺🇸)).*$/i;
-    i.outbounds.push(...getTags(proxies, regex));
-  }
-
-  if (['ai-auto'].includes(i.tag)) {
-    const regex = /^(?=.*(?:IEPL|AI))(?!.*(?:港|hk|hongkong|kong kong|🇭🇰|台|tw|taiwan|🇹🇼)).*$/i;
+    const regex = /(?!.*(?:港|hk|hongkong|kong kong|🇭🇰|日本|jp|japan|🇯🇵|新|sg|singapore|🇸🇬|美|us|unitedstates|united states|🇺🇸)).*$/i;
     i.outbounds.push(...getTags(proxies, regex));
   }
 
