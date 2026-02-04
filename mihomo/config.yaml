@@ -19,6 +19,7 @@ proxies:
   - {name: 直连, type: direct}
 
 # 全局配置 
+mode: rule
 mixed-port: 7890
 allow-lan: true
 bind-address: "*"
@@ -35,11 +36,11 @@ profile:
   store-fake-ip: true
 
 # 为防止使用插件朋友遇到面板问题，我注释掉了此模块。
-#external-controller: 0.0.0.0:9090
-#secret: ""
-#external-ui: ui
-#external-ui-name: zashboard
-#external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+external-controller: 0.0.0.0:9090
+secret: "6%@ay4^Gu*vjrG4z^*U3"
+external-ui: ui
+external-ui-name: zashboard
+external-ui-url: "https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip"
 
 # 嗅探（fakeip下其实可以不用嗅探）
 sniffer:
