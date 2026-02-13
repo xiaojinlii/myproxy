@@ -122,6 +122,7 @@ rules:
   - RULE-SET,private_domain,直连
   - DOMAIN-SUFFIX,xiaojinli.fun,直连
   - RULE-SET,proxylite,🚀 默认代理
+  - DOMAIN-SUFFIX,finance.yahoo.com,🤖 AI
   - RULE-SET,ai,🤖 AI
   - RULE-SET,pt_domain,直连
   - RULE-SET,youtube_domain,📹 Media
