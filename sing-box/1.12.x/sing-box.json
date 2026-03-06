@@ -44,6 +44,7 @@
       {"clash_mode": "Direct", "outbound": "direct"},
       {"rule_set": "geosite-self-download", "outbound": "download"},
       {"rule_set": "geosite-ai", "outbound": "ai"},
+      {"domain_suffix": ["finance.yahoo.com"], "outbound": "ai"},
       {"rule_set": ["geosite-spotify", "geosite-youtube", "geosite-hbo", "geosite-disney", "geosite-netflix"], "outbound": "media"},
       {"rule_set": "geosite-pt", "outbound": "direct"},
       {"rule_set": "geosite-ibkr", "outbound": "ai"},
