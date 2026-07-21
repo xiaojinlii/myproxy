@@ -64,8 +64,8 @@ if (home === true || home === 'true') {
     const homeRule = 'IP-CIDR,172.16.1.0/24,HOME,no-resolve'
     config.rules.unshift(homeRule)
 
-    // 5. 处理 xiaojinli.fun 规则 (新增或修改)
-    const targetKey = 'DOMAIN-SUFFIX,xiaojinli.fun';
+    // 5. 处理 xiaojinli.xyz 规则 (新增或修改)
+    const targetKey = 'DOMAIN-SUFFIX,xiaojinli.xyz';
     const targetRule = `${targetKey},HOME`;
     let isRuleFound = false;
 

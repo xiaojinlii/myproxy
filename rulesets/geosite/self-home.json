@@ -3,7 +3,7 @@
   "rules": [
     {
       "domain_suffix": [
-        "xiaojinli.fun"
+        "xiaojinli.xyz"
       ],
       "ip_cidr": [
         "172.16.1.0/24"
