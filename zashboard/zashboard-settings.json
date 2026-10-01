@@ -1,13 +1,12 @@
 {
-  "config/show-full-proxy-chain": "true",
+  "config/theme": "default",
   "config/swipe-in-pages": "true",
-  "config/hidden-group-map": "{\"all-auto\":false,\"asia-auto\":false,\"all\":false,\"home\":false}",
+  "config/hidden-group-map": "{\"all-auto\":false,\"asia-auto\":false,\"all\":false,\"home\":false,\"🚀 默认代理\":false}",
   "config/emoji": "noto-color-emoji",
   "config/display-connection-topology": "true",
   "config/disable-proxies-page-text-select": "true",
   "config/geoip-country-database-url": "https://testingcf.jsdelivr.net/gh/P3TERX/GeoLite.mmdb@download/GeoLite2-Country.mmdb",
   "config/table-sorting": "[]",
-  "config/theme": "default",
   "config/ip-check-secondary-api": "ip.sb",
   "config/log-filter-enabled": "false",
   "config/auto-sync-settings": "false",
@@ -99,6 +98,7 @@
   "config/independent-latency-test": "true",
   "config/table-grouping": "[]",
   "config/connection-card-lines": "[[\"host\",\"connectTime\"],[\"type\",\"dl\",\"ul\"],[\"chains\",\"dlSpeed\",\"close\"]]",
+  "config/show-full-proxy-chain": "true",
   "config/geoip-asn-database-url": "https://testingcf.jsdelivr.net/gh/P3TERX/GeoLite.mmdb@download/GeoLite2-ASN.mmdb",
   "config/auto-ip-check": "true",
   "config/disable-pull-to-refresh": "true"
