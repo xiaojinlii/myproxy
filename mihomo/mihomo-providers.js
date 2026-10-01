@@ -2,6 +2,7 @@ const {
   names,
   url,
   home = false,
+  tun = true,
 } = $arguments
 
 
@@ -31,6 +32,14 @@ if (namesArray.length > 0) {
         config['proxy-providers'][providerName] = newProvider
     })
 }
+
+
+// ===== tun ===== // 
+const enableTun = tun === true || tun === 'true'; 
+config.tun = {
+    ...(config.tun || {}), 
+    enable: enableTun, 
+};
 
 
 // ===== home ===== //

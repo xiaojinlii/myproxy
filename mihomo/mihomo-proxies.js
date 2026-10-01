@@ -2,6 +2,7 @@ const {
     type, 
     name, 
     home = false,
+    tun = true,
 } = $arguments
 
 
@@ -21,6 +22,14 @@ let clashMetaProxies = await produceArtifact({
   produceType: 'internal',
 })
 config.proxies.unshift(...clashMetaProxies)
+
+
+// ===== tun ===== // 
+const enableTun = tun === true || tun === 'true'; 
+config.tun = {
+    ...(config.tun || {}), 
+    enable: enableTun, 
+};
 
 
 // ===== home ===== //

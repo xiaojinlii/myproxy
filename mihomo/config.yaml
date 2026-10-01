@@ -2,6 +2,8 @@
 # 必读！！！
 # 注意规则在满足自己需求情况下，尽量做到精简，不要过度复杂，以免影响性能。
 # 跑裸核用户请自行去掉下方控制面板模块的注释。
+# https://github.com/MetaCubeX/mihomo/wiki/Configuring-example/f457310e6819dc32149b30abf45a5461f73ef4c8
+
 # 机场订阅
 proxy-providers:
   provider1:
@@ -18,7 +20,7 @@ proxy-providers:
 proxies:
   - {name: 直连, type: direct}
 
-# 全局配置 
+# 通用配置 
 mode: rule
 mixed-port: 7890
 allow-lan: true
@@ -34,12 +36,24 @@ profile:
   store-selected: true
   store-fake-ip: true
 
-# 为防止使用插件朋友遇到面板问题，我注释掉了此模块。
 external-controller: 0.0.0.0:9090
 secret: "6%@ay4^Gu*vjrG4z^*U3"
 external-ui: ui
 external-ui-name: zashboard
 external-ui-url: "https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip"
+
+# tun配置
+tun:
+  enable: true
+  # system/gvisor/mixed
+  stack: mixed
+  dns-hijack: ["any:53", "tcp://any:53"]
+  #使用nikki，混入全部不修改的情况，开启接口指定为nikki
+  #device: nikki
+  #使用仅内核自行修改下面三项为true
+  auto-route: false
+  auto-redirect: false
+  auto-detect-interface: false
 
 # 嗅探（fakeip下其实可以不用嗅探）
 sniffer:
@@ -56,19 +70,6 @@ sniffer:
     - "Mijia Cloud"
     - "+.push.apple.com"
 
-# 入站  
-tun:
-  enable: true
-  # system/gvisor/mixed
-  stack: mixed
-  dns-hijack: ["any:53", "tcp://any:53"]
-  #使用nikki，混入全部不修改的情况，开启接口指定为nikki
-  #device: nikki
-  #使用仅内核自行修改下面三项为true
-  auto-route: false
-  auto-redirect: false
-  auto-detect-interface: false
-
 # DNS模块
 dns:
   enable: true
@@ -77,7 +78,7 @@ dns:
   ipv6: false
   respect-rules: true
   enhanced-mode: fake-ip
-  fake-ip-range: 28.0.0.1/8
+  fake-ip-range: 198.18.0.1/16
   fake-ip-filter-mode: blacklist
   default-nameserver:
     - https://223.5.5.5/dns-query
