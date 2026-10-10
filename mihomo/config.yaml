@@ -41,6 +41,8 @@ secret: "6%@ay4^Gu*vjrG4z^*U3"
 external-ui: ui
 external-ui-name: zashboard
 external-ui-url: "https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip"
+external-controller-cors:
+  allow-private-network: true
 
 # tun配置
 tun:
