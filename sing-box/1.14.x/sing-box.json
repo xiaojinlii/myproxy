@@ -1,0 +1,121 @@
+{
+  "dns": {
+    "servers": [
+      {"tag": "remote-dns", "type": "https", "server": "8.8.8.8", "detour": "proxy"},
+      {"tag": "ali-dns", "type": "https", "server": "223.5.5.5"},
+      {"tag": "local-dns", "type": "local"}
+    ],
+    "rules": [
+      {"clash_mode": "Direct", "server": "local-dns", "action": "route"},
+      {"clash_mode": "Global", "server": "remote-dns", "action": "route"},
+      {"query_type": "HTTPS", "action": "reject"},
+      {"rule_set": "geosite-self-cn", "server": "local-dns", "action": "route"},
+      {"rule_set": "geosite-cn", "server": "local-dns", "action": "route"},
+      {"rule_set": "geosite-!cn", "server": "remote-dns", "client_subnet": "1.1.1.1", "action": "route"}
+    ],
+    "final": "remote-dns"
+  },
+  "outbounds": [
+    {"tag": "proxy", "type": "selector", "outbounds": ["all", "all-auto", "hk-auto", "jp-auto", "sg-auto", "us-auto", "other-auto"], "default": "all-auto"},
+    {"tag": "ai", "type": "selector", "outbounds": ["proxy", "all", "jp-auto", "sg-auto", "us-auto", "other-auto"]},
+    {"tag": "media", "type": "selector", "outbounds": ["proxy", "all", "all-auto", "hk-auto", "jp-auto", "sg-auto", "us-auto", "other-auto"]},
+    {"tag": "download", "type": "selector", "outbounds": ["proxy", "all", "all-auto"]},
+    {"tag": "final", "type": "selector", "outbounds": ["proxy", "direct"], "default": "proxy"},
+    {"tag": "all", "type": "selector", "outbounds": []},
+    {"tag": "all-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "hk-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "jp-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "sg-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "us-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "other-auto", "type": "urltest", "outbounds": [], "interval": "1m"},
+    {"tag": "GLOBAL", "type": "selector", "outbounds": ["proxy", "direct"]},
+    {"tag": "direct", "type": "direct"}
+  ],
+  "route": {
+    "default_domain_resolver": {
+      "server": "local-dns"
+    },
+    "rules": [
+      {"action": "sniff", "sniffer": ["http", "tls", "quic", "dns"], "timeout": "500ms"},
+      {"type": "logical", "mode": "or", "rules": [{"port": 53}, {"protocol": "dns"}], "action": "hijack-dns"},
+      {"ip_is_private": true, "outbound": "direct"},
+      {"clash_mode": "Global", "outbound": "GLOBAL"},
+      {"clash_mode": "Direct", "outbound": "direct"},
+      {"rule_set": "geosite-self-download", "outbound": "download"},
+      {"rule_set": "geosite-ai", "outbound": "ai"},
+      {"domain_suffix": ["finance.yahoo.com"], "outbound": "ai"},
+      {"rule_set": ["geosite-spotify", "geosite-youtube", "geosite-hbo", "geosite-disney", "geosite-netflix"], "outbound": "media"},
+      {"rule_set": "geosite-pt", "outbound": "direct"},
+      {"rule_set": "geosite-ibkr", "outbound": "ai"},
+      {"rule_set": "geosite-apple", "outbound": "direct"},
+      {"rule_set": "geosite-self-cn", "outbound": "direct"},
+      {"rule_set": "geosite-cn", "outbound": "direct"},
+      {"rule_set": "geoip-apple", "outbound": "direct"},
+      {"rule_set": "geoip-netflix", "outbound": "media"},
+      {"rule_set": "geoip-cn", "outbound": "direct"},
+      {"rule_set": "geosite-!cn", "outbound": "proxy"}
+    ],
+    "rule_set": [
+      {"tag": "geosite-apple", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/apple.srs", "download_detour": "direct"},
+      {"tag": "geosite-ai", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ai-!cn.srs", "download_detour": "direct"},
+      {"tag": "geosite-spotify", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/spotify.srs", "download_detour": "direct"},
+      {"tag": "geosite-youtube", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/youtube.srs", "download_detour": "direct"},
+      {"tag": "geosite-hbo", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/hbo.srs", "download_detour": "direct"},
+      {"tag": "geosite-disney", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/disney.srs", "download_detour": "direct"},
+      {"tag": "geosite-netflix", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/netflix.srs", "download_detour": "direct"},
+      {"tag": "geosite-ibkr", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/ibkr.srs", "download_detour": "direct"},
+      {"tag": "geosite-pt", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-pt.srs", "download_detour": "direct"},
+      {"tag": "geosite-!cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/geolocation-!cn.srs", "download_detour": "direct"},
+      {"tag": "geosite-self-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/xiaojinlii/myproxy/refs/heads/master/rulesets/geosite/self-cn.srs?v=20260722", "download_detour": "direct"},
+      {"tag": "geosite-self-download", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/xiaojinlii/myproxy/refs/heads/master/rulesets/geosite/self-download.srs", "download_detour": "direct"},
+      {"tag": "geosite-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/cn.srs", "download_detour": "direct"},
+      {"tag": "geoip-apple", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo-lite/geoip/apple.srs", "download_detour": "direct"},
+      {"tag": "geoip-netflix", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/netflix.srs", "download_detour": "direct"},
+      {"tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/cn.srs", "download_detour": "direct"},
+      {"tag": "geo-home", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/xiaojinlii/myproxy/refs/heads/master/rulesets/geosite/self-home.srs?v=20260722", "download_detour": "direct"}
+    ],
+    "auto_detect_interface": true,
+    "final": "final"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "interface_name": "singbox",
+      "address": [
+        "172.19.0.0/30",
+        "fdfe:dcba:9876::0/126"
+      ],
+      "stack": "mixed",
+      "auto_route": true,
+      "strict_route": true,
+      "platform": {
+        "http_proxy": {
+          "enabled": true,
+          "server": "0.0.0.0",
+          "server_port": 7890
+        }
+      }
+    },
+    {
+      "type": "mixed",
+      "listen": "0.0.0.0",
+      "listen_port": 7890
+    }
+  ],
+  "experimental": {
+    "clash_api": {
+      "external_controller": "0.0.0.0:9090",
+      "external_ui": "ui",
+      "external_ui_download_url": "https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip",
+      "external_ui_download_detour": "direct",
+      "secret": "6%@ay4^Gu*vjrG4z^*U3"
+    },
+    "cache_file": {
+      "enabled": true
+    }
+  },
+  "log": {
+    "disabled": false,
+    "level": "debug"
+  }
+}
