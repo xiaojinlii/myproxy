@@ -21,6 +21,20 @@ let proxies = await produceArtifact({
 })
 
 
+// ===== sing-box 1.14.x compatibility =====
+// sing-box 1.15.0 才支持 certificate_sha256。
+// Sub-Store 会将源节点的 tls-fingerprint 转换成该字段。
+// 1.14.x 无法识别，因此删除生成结果中的 certificate_sha256。
+for (const proxy of proxies) {
+  if (
+    proxy?.tls &&
+    Object.prototype.hasOwnProperty.call(proxy.tls, 'certificate_sha256')
+  ) {
+    delete proxy.tls.certificate_sha256
+  }
+}
+
+
 // ===== outbounds ===== //
 config.outbounds.push(...proxies)
 
