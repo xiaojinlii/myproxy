@@ -105,8 +105,7 @@
   ],
   "http_clients": [
     {
-      "tag": "rule-set-direct",
-      "detour": "direct"
+      "tag": "rule-set-direct"
     }
   ],
   "experimental": {
